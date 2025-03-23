@@ -1,0 +1,69 @@
+/* Employee Page Styling */
+.employee-page {
+    font-family: Arial, sans-serif;
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+  }
+  
+  .employee-header {
+    background-color: #131921;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    border-radius: 4px;
+  }
+  
+  .employee-content {
+    margin-top: 20px;
+  }
+  
+  .employee-section {
+    background: white;
+    padding: 15px;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+  }
+  
+  .employee-section h3 {
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  .employee-section input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+  }
+  
+  .employee-section button {
+    width: 100%;
+    padding: 10px;
+    background-color: #008CBA;
+    border: none;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .employee-section button:hover {
+    background-color: #007B9E;
+  }
+  
+  .employee-footer {
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  .employee-footer a {
+    text-decoration: none;
+    color: #008CBA;
+    font-weight: bold;
+  }  
