@@ -5,6 +5,8 @@ import Search from "./pages/search.js";
 import Admin from './pages/admin.js';
 import Employee from './pages/employee.js';
 
+import ChainComponent from "./pages/Testpage.js";
+
 function App() {
   return (
     <Router>
@@ -12,6 +14,7 @@ function App() {
         <Route path="/" element={<Search />} />
         <Route path="/admin" element={<Admin />} />
         <Route path="/employee" element={<Employee />} />
+        <Route path="/chain/:chainId" element={<ChainComponent />} />
       </Routes>
     </Router>
   );

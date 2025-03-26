@@ -4,32 +4,57 @@ import '../styles/search.css';
 
 function Search() {
   const [criteria, setCriteria] = useState({
-    startDate: '',
-    endDate: '',
+    chain: '',
+    maxPrice: '',
+    minPrice: '',
     capacity: '',
-    area: '',
-    hotelChain: '',
-    hotelCategory: '',
-    totalRooms: '',
-    price: ''
+    city: '',
+    state: '',
+    rating: ''
   });
+  
 
   const [availableRooms, setAvailableRooms] = useState([]);
 
-  // Simulate fetching available rooms based on criteria
+  const [chainNames, setChainNames] = useState([]);
+
+  // ✅ 2nd useEffect for fetching chain names
   useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      // Replace this with your API call
-      setAvailableRooms([
-        { id: 1, roomNumber: '101', capacity: criteria.capacity || 2, price: criteria.price || 100 },
-        { id: 2, roomNumber: '102', capacity: criteria.capacity || 2, price: criteria.price || 120 },
-        { id: 3, roomNumber: '103', capacity: criteria.capacity || 3, price: criteria.price || 150 }
-      ]);
-    }, 500);
+    fetch('http://localhost:8080/api/chains/names')
+      .then(res => res.json())
+      .then(data => setChainNames(data))
+      .catch(err => console.error('Error fetching chain names:', err));
+  }, []);
 
-    return () => clearTimeout(timeoutId);
+  useEffect(() => {
+    // Only make the call if at least one filter is selected
+    if (
+      criteria.chain ||
+      criteria.maxPrice ||
+      criteria.minPrice ||
+      criteria.capacity ||
+      criteria.city ||
+      criteria.state ||
+      criteria.rating
+    ) {
+      const query = new URLSearchParams({
+        chain: criteria.chain,
+        maxPrice: criteria.maxPrice || 9999,
+        minPrice: criteria.minPrice || 0,
+        capacity: criteria.capacity || 1,
+        city: criteria.city,
+        state: criteria.state,
+        rating: criteria.rating || 1
+      }).toString();
+  
+      fetch(`http://localhost:8080/api/rooms/search/filter?${query}`)
+        .then(res => res.json())
+        .then(data => setAvailableRooms(data))
+        .catch(err => console.error("Error fetching filtered rooms:", err));
+    }
   }, [criteria]);
-
+  
+    
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setCriteria(prev => ({ ...prev, [name]: value }));
@@ -83,95 +108,90 @@ function Search() {
           <h2>Search Rooms</h2>
           <form>
             <div className="form-group">
-              <label htmlFor="startDate">Start Date:</label>
-              <input 
-                type="date" 
-                id="startDate" 
-                name="startDate" 
-                value={criteria.startDate} 
-                onChange={handleInputChange} 
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="endDate">End Date:</label>
-              <input 
-                type="date" 
-                id="endDate" 
-                name="endDate" 
-                value={criteria.endDate} 
-                onChange={handleInputChange} 
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="capacity">Room Capacity:</label>
-              <input 
-                type="number" 
-                id="capacity" 
-                name="capacity" 
-                value={criteria.capacity} 
-                onChange={handleInputChange} 
-                placeholder="e.g. 2" 
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="area">Area:</label>
-              <input 
-                type="text" 
-                id="area" 
-                name="area" 
-                value={criteria.area} 
-                onChange={handleInputChange} 
-                placeholder="e.g. Downtown" 
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="hotelChain">Hotel Chain:</label>
-              <select 
-                id="hotelChain" 
-                name="hotelChain" 
-                value={criteria.hotelChain} 
+              <label htmlFor="chain">Hotel Chain:</label>
+              <select
+                id="chain"
+                name="chain"
+                value={criteria.chain}
                 onChange={handleInputChange}
               >
                 <option value="">Select a chain</option>
-                <option value="Chain A">Chain A</option>
-                <option value="Chain B">Chain B</option>
-                <option value="Chain C">Chain C</option>
+                {chainNames.map((name, index) => (
+                  <option key={index} value={name}>{name}</option>
+                ))}
               </select>
             </div>
+
             <div className="form-group">
-              <label htmlFor="hotelCategory">Hotel Category:</label>
-              <select 
-                id="hotelCategory" 
-                name="hotelCategory" 
-                value={criteria.hotelCategory} 
+              <label htmlFor="minPrice">Min Price:</label>
+              <input
+                type="number"
+                id="minPrice"
+                name="minPrice"
+                value={criteria.minPrice}
                 onChange={handleInputChange}
-              >
-                <option value="">Select a category</option>
-                <option value="Luxury">Luxury</option>
-                <option value="Budget">Budget</option>
-                <option value="Boutique">Boutique</option>
-              </select>
-            </div>
-            <div className="form-group">
-              <label htmlFor="totalRooms">Total Number of Rooms:</label>
-              <input 
-                type="number" 
-                id="totalRooms" 
-                name="totalRooms" 
-                value={criteria.totalRooms} 
-                onChange={handleInputChange} 
-                placeholder="e.g. 50" 
+                placeholder="e.g. 50"
               />
             </div>
+
             <div className="form-group">
-              <label htmlFor="price">Price:</label>
-              <input 
-                type="number" 
-                id="price" 
-                name="price" 
-                value={criteria.price} 
-                onChange={handleInputChange} 
-                placeholder="e.g. 100" 
+              <label htmlFor="maxPrice">Max Price:</label>
+              <input
+                type="number"
+                id="maxPrice"
+                name="maxPrice"
+                value={criteria.maxPrice}
+                onChange={handleInputChange}
+                placeholder="e.g. 200"
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="capacity">Room Capacity:</label>
+              <input
+                type="number"
+                id="capacity"
+                name="capacity"
+                value={criteria.capacity}
+                onChange={handleInputChange}
+                placeholder="e.g. 2"
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="city">City:</label>
+              <input
+                type="text"
+                id="city"
+                name="city"
+                value={criteria.city}
+                onChange={handleInputChange}
+                placeholder="e.g. Ottawa"
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="state">State:</label>
+              <input
+                type="text"
+                id="state"
+                name="state"
+                value={criteria.state}
+                onChange={handleInputChange}
+                placeholder="e.g. Ontario"
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="rating">Hotel Rating (1-5):</label>
+              <input
+                type="number"
+                id="rating"
+                name="rating"
+                min="1"
+                max="5"
+                value={criteria.rating}
+                onChange={handleInputChange}
               />
             </div>
           </form>
@@ -183,8 +203,9 @@ function Search() {
           <div className="rooms-grid">
             {availableRooms.length > 0 ? (
               availableRooms.map(room => (
-                <div key={room.id} className="room-box">
-                  <h3>Room {room.roomNumber}</h3>
+                <div key={room.roomId} className="room-box">
+                  <h3>{room.hotelName}</h3>
+                  <h3>Room {room.roomId}</h3>
                   <p>Capacity: {room.capacity}</p>
                   <p>Price: ${room.price}</p>
                   <button className="book-btn">Book / Rent</button>
