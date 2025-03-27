@@ -16,6 +16,8 @@ CREATE TABLE hotel(
     hotel_name VARCHAR(255),
     rating INT,
     hotel_address VARCHAR(255),
+    city VARCHAR(255),
+    state VARCHAR(255),
     amount_of_rooms INT,
     contact_email VARCHAR(255) REFERENCES hotel_chain(email_addresses),
     contact_phone VARCHAR(255) REFERENCES hotel_chain(phone_numbers),
@@ -56,18 +58,12 @@ CREATE TABLE customer(
 )
 
 -- @block
-CREATE TABLE book_room(
-    booking_id INT PRIMARY KEY AUTO_INCREMENT,
-    room_id INT NOT NULL,
-    FOREIGN KEY (room_id) REFERENCES room(room_id)
-)
-
--- @block
 CREATE TABLE booking(
     booking_id INT PRIMARY KEY AUTO_INCREMENT,
+    room_id INT NOT NULL,
     customer_id INT NOT NULL,
     FOREIGN KEY (customer_id) REFERENCES customer(customer_id),
-    FOREIGN KEY (booking_id) REFERENCES book_room(booking_id),
+    FOREIGN KEY (room_id) REFERENCES room(room_id),
     booking_date DATE,
     checkin_date DATE,
     checkout_date DATE,
@@ -75,56 +71,15 @@ CREATE TABLE booking(
 )
 
 -- @block
-ALTER TABLE booking
-ADD COLUMN room_id INT NOT NULL;
-
--- @block
-ALTER TABLE booking
-ADD CONSTRAINT fk_booking_room
-FOREIGN KEY (room_id) REFERENCES room(room_id);
-
--- @block
-CREATE TABLE save_book(
-    booking_id INT PRIMARY KEY AUTO_INCREMENT,
-    FOREIGN KEY (booking_id) REFERENCES book_room(booking_id),
-    booking_date DATE REFERENCES booking(booking_date),
-    checkin_date DATE REFERENCES booking(checkin_date),
-    checkout_date DATE REFERENCES booking(checkout_date)
-)
-
--- @block
-CREATE TABLE rent_room(
-    renting_id INT PRIMARY KEY AUTO_INCREMENT,
-    room_id INT NOT NULL,
-    FOREIGN KEY (room_id) REFERENCES room(room_id)
-)
-
--- @block
 CREATE TABLE renting(
     renting_id INT PRIMARY KEY AUTO_INCREMENT,
+    room_id INT NOT NULL,
     customer_id INT NOT NULL,
     FOREIGN KEY (customer_id) REFERENCES customer(customer_id),
-    FOREIGN KEY (renting_id) REFERENCES rent_room(renting_id),
+    FOREIGN KEY (room_id) REFERENCES room(room_id),
     start_date DATE,
     end_date DATE,
     payment_status VARCHAR(255)
-)
-
--- @block
-ALTER TABLE renting
-ADD COLUMN room_id INT NOT NULL;
-
--- @block
-ALTER TABLE renting
-ADD CONSTRAINT fk_renting_room
-FOREIGN KEY (room_id) REFERENCES room(room_id);
-
--- @block
-CREATE TABLE save_rent(
-    renting_id INT PRIMARY KEY AUTO_INCREMENT,
-    FOREIGN KEY (renting_id) REFERENCES rent_room(renting_id),
-    start_date DATE REFERENCES renting(start_date),
-    end_date DATE REFERENCES renting(end_date)
 )
 
 -- @block
@@ -132,11 +87,25 @@ CREATE TABLE archive(
     archive_id INT PRIMARY KEY AUTO_INCREMENT,
     booking_id INT NOT NULL,
     renting_id INT NOT NULL,
-    FOREIGN KEY (booking_id) REFERENCES save_book(booking_id),
-    FOREIGN KEY (renting_id) REFERENCES save_rent(renting_id),
-    checkin_date DATE REFERENCES save_book(checkin_date),
-    checkout_date DATE REFERENCES save_book(checkout_date),
-    booking_date DATE REFERENCES save_book(booking_date),
-    start_date DATE REFERENCES save_rent(start_date),
-    end_date DATE REFERENCES save_rent(end_date)
+    FOREIGN KEY (booking_id) REFERENCES booking(booking_id),
+    FOREIGN KEY (renting_id) REFERENCES renting(renting_id),
+    checkin_date DATE REFERENCES booking(checkin_date),
+    checkout_date DATE REFERENCES booking(checkout_date),
+    booking_date DATE REFERENCES booking(booking_date),
+    start_date DATE REFERENCES renting(start_date),
+    end_date DATE REFERENCES renting(end_date)
 )
+
+-- @block
+DROP TABLE IF EXISTS archive;
+DROP TABLE IF EXISTS save_book;
+DROP TABLE IF EXISTS save_rent;
+DROP TABLE IF EXISTS renting;
+DROP TABLE IF EXISTS booking;
+DROP TABLE IF EXISTS rent_room;
+DROP TABLE IF EXISTS book_room;
+DROP TABLE IF EXISTS customer;
+DROP TABLE IF EXISTS room;
+DROP TABLE IF EXISTS employee;
+DROP TABLE IF EXISTS hotel;
+DROP TABLE IF EXISTS hotel_chain;
