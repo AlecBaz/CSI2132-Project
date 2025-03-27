@@ -182,8 +182,8 @@ body, html {
   }
   
   .book-btn {
-    background-color: #f0c14b;
-    border: 1px solid #a88734;
+    background-color: #007bff;
+    color: white;
     padding: 10px 15px;
     border-radius: 4px;
     cursor: pointer;
@@ -191,5 +191,5 @@ body, html {
   }
   
   .book-btn:hover {
-    background-color: #e2b33c;
+    background-color: #0056b3;
   }

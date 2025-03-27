@@ -4,7 +4,7 @@ import '../styles/employee.css';
 
 function Employee() {
   const [bookingId, setBookingId] = useState('');
-  const [rentalInfo, setRentalInfo] = useState({ roomId: '', customerId: '', duration: '' });
+  const [rentalInfo, setRentalInfo] = useState({ roomId: '', customerId: '', startDate: '', endDate: '' });
   const [paymentInfo, setPaymentInfo] = useState({ rentalId: '', amount: '' });
 
   const handleConfirmBooking = () => {
@@ -13,7 +13,7 @@ function Employee() {
   };
 
   const handleDirectRenting = () => {
-    console.log(`Direct Renting - Room: ${rentalInfo.roomId}, Customer: ${rentalInfo.customerId}, Duration: ${rentalInfo.duration}`);
+    console.log(`Direct Renting - Room: ${rentalInfo.roomId}, Customer: ${rentalInfo.customerId}, Start Date: ${rentalInfo.startDate}, End Date: ${rentalInfo.endDate}`);
     // API call to process a direct renting
   };
 
@@ -25,7 +25,7 @@ function Employee() {
   return (
     <div className="employee-page">
       <header className="employee-header">
-        <h1>Hotel Employee Panel</h1>
+        <h1>MyHotel Employee Panel</h1>
       </header>
 
       <div className="employee-content">
@@ -57,10 +57,16 @@ function Employee() {
             onChange={(e) => setRentalInfo({ ...rentalInfo, customerId: e.target.value })}
           />
           <input
-            type="text"
-            placeholder="Duration (in days)"
-            value={rentalInfo.duration}
-            onChange={(e) => setRentalInfo({ ...rentalInfo, duration: e.target.value })}
+            type="date"
+            placeholder="Start Date"
+            value={rentalInfo.startDate}
+            onChange={(e) => setRentalInfo({ ...rentalInfo, startDate: e.target.value })}
+          />
+          <input
+            type="date"
+            placeholder="End Date"
+            value={rentalInfo.endDate}
+            onChange={(e) => setRentalInfo({ ...rentalInfo, endDate: e.target.value })}
           />
           <button onClick={handleDirectRenting}>Confirm Renting</button>
         </div>
