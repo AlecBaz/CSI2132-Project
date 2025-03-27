@@ -4,6 +4,7 @@ import './App.css';
 import Search from "./pages/search.js";
 import Admin from './pages/admin.js';
 import Employee from './pages/employee.js';
+import Booking from './pages/booking.js';
 
 import ChainComponent from "./pages/Testpage.js";
 
@@ -14,6 +15,7 @@ function App() {
         <Route path="/" element={<Search />} />
         <Route path="/admin" element={<Admin />} />
         <Route path="/employee" element={<Employee />} />
+        <Route path="/booking/:roomID" element={<Booking />} />
         <Route path="/chain/:chainId" element={<ChainComponent />} />
       </Routes>
     </Router>

@@ -65,6 +65,26 @@ body, html {
   .admin-link a:hover {
     background-color: #5e5e5e;
   }
+
+  /* Position the admin button at the far right in the top nav */
+  .employee-link {
+    padding: 5px 10px;
+  }
+
+  /* Style the admin link as a button */
+  .employee-link a {
+    color: white;
+    background-color: #808080;
+    padding: 8px 16px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+  }
+
+  /* Change background on hover */
+  .employee-link a:hover {
+    background-color: #5e5e5e;
+  }
   
   
   /* Dropdown Menu */

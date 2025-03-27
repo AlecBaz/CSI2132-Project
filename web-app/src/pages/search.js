@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom'; // Using Link for navigation
+import { Link, useNavigate } from 'react-router-dom'; // Using Link for navigation
 import '../styles/search.css';
 
 function Search() {
@@ -17,8 +17,8 @@ function Search() {
   
 
   const [availableRooms, setAvailableRooms] = useState([]);
-
   const [chainNames, setChainNames] = useState([]);
+  const navigate = useNavigate(); // ✅ Initialize navigate function
 
   // ✅ 2nd useEffect for fetching chain names
   useEffect(() => {
@@ -63,7 +63,9 @@ function Search() {
     return () => clearTimeout(debounceTimeout); // ❌ Clear timeout if user types again
   }, [criteria]);
   
-  
+  const handleBookRoom = (roomId) => {
+    navigate(`/booking/${roomId}`); // Redirect to booking page with roomID
+  };
     
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -109,6 +111,9 @@ function Search() {
          {/* New Admin Button on the far right */}
          <div className="admin-link">
           <Link to="/admin">Admin</Link>
+        </div>
+        <div className="employee-link">
+          <Link to="/employee">Employee</Link>
         </div>
       </header>
 
@@ -243,7 +248,7 @@ function Search() {
                   <p>Amenities: {room.amentities}</p>
                   <p>Extendable: {room.extendable ? 'Yes' : 'No'}</p>
                   <p>Damages: {room.damages || 'None'}</p>
-                  <button className="book-btn">Book / Rent</button>
+                  <button className="book-btn" onClick={() => handleBookRoom(room.roomId)}>Book</button>
                 </div>
               ))
             ) : (
