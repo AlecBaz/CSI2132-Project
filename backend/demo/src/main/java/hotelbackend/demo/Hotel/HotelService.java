@@ -19,7 +19,10 @@ public class HotelService {
             System.err.println("Chain: " + chain);
             query.append(" AND hc.chain_name = ?");
         }
-        if (city != null && !city.isEmpty() && state != null && !state.isEmpty()) {
+        if (city != null && !city.isEmpty()) {
+            query.append(" AND h.hotel_address LIKE ?");
+        }
+        if (state != null && !state.isEmpty()) {
             query.append(" AND h.hotel_address LIKE ?");
         }
         if (rating != null) {
@@ -34,8 +37,11 @@ public class HotelService {
             if (chain != null && !chain.isEmpty()) {
                 statement.setString(paramIndex++, chain);
             }
-            if (city != null && !city.isEmpty() && state != null && !state.isEmpty()) {
-                statement.setString(paramIndex++, "%, " + city + ", " + state);
+            if (city != null && !city.isEmpty()) {
+                statement.setString(paramIndex++, "%" + city + "%");
+            }
+            if (state != null && !state.isEmpty()) {
+                statement.setString(paramIndex++, "%" + state + "%");
             }
             if (rating != null) {
                 statement.setInt(paramIndex++, rating);

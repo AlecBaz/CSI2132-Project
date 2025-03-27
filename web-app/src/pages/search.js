@@ -4,6 +4,8 @@ import '../styles/search.css';
 
 function Search() {
   const [criteria, setCriteria] = useState({
+    startDate: '',
+    endDate: '',
     chain: '',
     maxPrice: '',
     minPrice: '',
@@ -27,32 +29,40 @@ function Search() {
   }, []);
 
   useEffect(() => {
-    // Only make the call if at least one filter is selected
-    if (
-      criteria.chain ||
-      criteria.maxPrice ||
-      criteria.minPrice ||
-      criteria.capacity ||
-      criteria.city ||
-      criteria.state ||
-      criteria.rating
-    ) {
-      const query = new URLSearchParams({
-        chain: criteria.chain,
-        maxPrice: criteria.maxPrice || 9999,
-        minPrice: criteria.minPrice || 0,
-        capacity: criteria.capacity || 1,
-        city: criteria.city,
-        state: criteria.state,
-        rating: criteria.rating || 1
-      }).toString();
+    const debounceTimeout = setTimeout(() => {
+      if (
+        (criteria.startDate && criteria.endDate) || 
+        criteria.chain || 
+        criteria.maxPrice || 
+        criteria.minPrice || 
+        criteria.capacity || 
+        criteria.city || 
+        criteria.state || 
+        criteria.rating
+      ) {
+        const today = new Date().toISOString().split('T')[0];
+        const query = new URLSearchParams({
+          startDate: criteria.startDate || today,
+          endDate: criteria.endDate || '9999-12-31',
+          chain: criteria.chain,
+          maxPrice: criteria.maxPrice || 9999,
+          minPrice: criteria.minPrice || 0,
+          capacity: criteria.capacity || 1,
+          city: criteria.city,
+          state: criteria.state,
+          rating: criteria.rating || 1
+        }).toString();
+    
+        fetch(`http://localhost:8080/api/rooms/search/filter?${query}`)
+          .then(res => res.json())
+          .then(data => setAvailableRooms(data))
+          .catch(err => console.error("Error fetching filtered rooms:", err));
+      }
+    }, 1000); // ⏱ 500ms debounce delay
   
-      fetch(`http://localhost:8080/api/rooms/search/filter?${query}`)
-        .then(res => res.json())
-        .then(data => setAvailableRooms(data))
-        .catch(err => console.error("Error fetching filtered rooms:", err));
-    }
+    return () => clearTimeout(debounceTimeout); // ❌ Clear timeout if user types again
   }, [criteria]);
+  
   
     
   const handleInputChange = (e) => {
@@ -107,6 +117,26 @@ function Search() {
         <aside className="search-sidebar">
           <h2>Search Rooms</h2>
           <form>
+          <div className="form-group">
+              <label htmlFor="startDate">Start Date:</label>
+              <input 
+                type="date" 
+                id="startDate" 
+                name="startDate" 
+                value={criteria.startDate} 
+                onChange={handleInputChange} 
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="endDate">End Date:</label>
+              <input 
+                type="date" 
+                id="endDate" 
+                name="endDate" 
+                value={criteria.endDate} 
+                onChange={handleInputChange} 
+              />
+            </div>
             <div className="form-group">
               <label htmlFor="chain">Hotel Chain:</label>
               <select
@@ -205,9 +235,14 @@ function Search() {
               availableRooms.map(room => (
                 <div key={room.roomId} className="room-box">
                   <h3>{room.hotelName}</h3>
+                  <p>{room.hotelAddress}</p>
                   <h3>Room {room.roomId}</h3>
                   <p>Capacity: {room.capacity}</p>
                   <p>Price: ${room.price}</p>
+                  <p>View: {room.view}</p>
+                  <p>Amenities: {room.amentities}</p>
+                  <p>Extendable: {room.extendable ? 'Yes' : 'No'}</p>
+                  <p>Damages: {room.damages || 'None'}</p>
                   <button className="book-btn">Book / Rent</button>
                 </div>
               ))

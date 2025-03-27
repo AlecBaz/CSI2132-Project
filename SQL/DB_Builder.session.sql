@@ -75,6 +75,15 @@ CREATE TABLE booking(
 )
 
 -- @block
+ALTER TABLE booking
+ADD COLUMN room_id INT NOT NULL;
+
+-- @block
+ALTER TABLE booking
+ADD CONSTRAINT fk_booking_room
+FOREIGN KEY (room_id) REFERENCES room(room_id);
+
+-- @block
 CREATE TABLE save_book(
     booking_id INT PRIMARY KEY AUTO_INCREMENT,
     FOREIGN KEY (booking_id) REFERENCES book_room(booking_id),
@@ -100,6 +109,15 @@ CREATE TABLE renting(
     end_date DATE,
     payment_status VARCHAR(255)
 )
+
+-- @block
+ALTER TABLE renting
+ADD COLUMN room_id INT NOT NULL;
+
+-- @block
+ALTER TABLE renting
+ADD CONSTRAINT fk_renting_room
+FOREIGN KEY (room_id) REFERENCES room(room_id);
 
 -- @block
 CREATE TABLE save_rent(

@@ -11,6 +11,7 @@ public class Room {
     private String damages;
 
     private String hotelName;
+    private String hotelAddress;
 
     // Getters and Setters
     public int getRoomId() {
@@ -83,5 +84,13 @@ public class Room {
 
     public void setHotelName(String hotelName) {
         this.hotelName = hotelName;
+    }
+
+    public String getHotelAddress() {
+        return hotelAddress;
+    }
+
+    public void setHotelAddress(String hotelAddress) {
+        this.hotelAddress = hotelAddress;
     }
 }

@@ -6,9 +6,11 @@ import java.util.List;
 
 import hotelbackend.demo.Hotel.Hotel;
 import hotelbackend.demo.Hotel.HotelService;
+import hotelbackend.demo.Booking.BookingService;
+
 public class RoomService {
 
-    public List<Room> FilterRooms(String chain, int maxPrice, int minPrice, int capacity, String city, String state, int rating) {
+    public List<Room> FilterRooms(Date StartDate, Date EndDate, String chain, int maxPrice, int minPrice, int capacity, String city, String state, int rating) {
         String jdbcURL = "jdbc:mysql://34.95.43.176:3306/HotelDB?useSSL=false";
         String dbUser = "root";
         String dbPassword = "AlecSam2025";
@@ -47,7 +49,26 @@ public class RoomService {
                     room.setCapacity(resultSet.getInt("capacity"));
                     room.setDamages(resultSet.getString("damages"));
                     room.setHotelName(hotel.getHotelName());
-                    rooms.add(room);
+                    room.setHotelAddress(hotel.getHotelAddress());
+
+                    // Check room availability
+                    BookingService bookingService = new BookingService();
+                    List<List<Date>> availability = bookingService.getAvailability(room.getRoomId());
+                    boolean isAvailable = true;
+
+                    for (List<Date> period : availability) {
+                        Date availableStart = period.get(0);
+                        Date availableEnd = period.get(1);
+
+                        if (!(EndDate.before(availableStart) || StartDate.after(availableEnd))) {
+                            isAvailable = false;
+                            break;
+                        }
+                    }
+
+                    if (isAvailable) {
+                        rooms.add(room);
+                    }
                 }
             }
 
