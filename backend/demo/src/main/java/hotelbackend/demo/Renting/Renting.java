@@ -5,6 +5,7 @@ import java.util.Date;
 public class Renting {
     private int rentingId;
     private int customerId;
+    private int roomId; // Added roomId
     private Date startDate;
     private Date endDate;
     private String paymentStatus;
@@ -24,6 +25,14 @@ public class Renting {
 
     public void setCustomerId(int customerId) {
         this.customerId = customerId;
+    }
+
+    public int getRoomId() { // Getter for roomId
+        return roomId;
+    }
+
+    public void setRoomId(int roomId) { // Setter for roomId
+        this.roomId = roomId;
     }
 
     public Date getStartDate() {

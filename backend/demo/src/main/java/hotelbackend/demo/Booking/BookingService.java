@@ -98,18 +98,34 @@ public class BookingService {
                 throw new IllegalArgumentException("Room is not available for the selected dates.");
             }
 
-            String query = "INSERT INTO booking (room_id, customer_id, booking_date, checkin_date, checkout_date, status) " +
-                           "VALUES (?, ?, CURDATE(), ?, ?, 'CONFIRMED')";
+            String bookingQuery = "INSERT INTO booking (room_id, customer_id, booking_date, checkin_date, checkout_date, status) " +
+                                  "VALUES (?, ?, CURDATE(), ?, ?, 'CONFIRMED')";
 
             try (Connection connection = DriverManager.getConnection(jdbcURL, dbUser, dbPassword);
-                 PreparedStatement statement = connection.prepareStatement(query)) {
+                 PreparedStatement bookingStatement = connection.prepareStatement(bookingQuery, Statement.RETURN_GENERATED_KEYS)) {
 
-                statement.setInt(1, roomid);
-                statement.setInt(2, customerid);
-                statement.setDate(3, startDate);
-                statement.setDate(4, endDate);
+                bookingStatement.setInt(1, roomid);
+                bookingStatement.setInt(2, customerid);
+                bookingStatement.setDate(3, startDate);
+                bookingStatement.setDate(4, endDate);
 
-                statement.executeUpdate();
+                bookingStatement.executeUpdate();
+
+                ResultSet generatedKeys = bookingStatement.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    int bookingId = generatedKeys.getInt(1);
+
+                    String archiveQuery = "INSERT INTO archive (booking_id, renting_id, checkin_date, checkout_date, booking_date, start_date, end_date) " +
+                                          "VALUES (?, NULL, ?, ?, CURDATE(), NULL, NULL)";
+
+                    try (PreparedStatement archiveStatement = connection.prepareStatement(archiveQuery)) {
+                        archiveStatement.setInt(1, bookingId);
+                        archiveStatement.setDate(2, startDate);
+                        archiveStatement.setDate(3, endDate);
+
+                        archiveStatement.executeUpdate();
+                    }
+                }
 
             } catch (SQLException e) {
                 e.printStackTrace();

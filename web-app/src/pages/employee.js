@@ -7,19 +7,65 @@ function Employee() {
   const [rentalInfo, setRentalInfo] = useState({ roomId: '', customerId: '', startDate: '', endDate: '' });
   const [paymentInfo, setPaymentInfo] = useState({ rentalId: '', amount: '' });
 
-  const handleConfirmBooking = () => {
-    console.log(`Confirming booking: ${bookingId}`);
-    // API call to confirm booking and convert it into a rental
+  // Convert Booking to Renting
+  const handleConfirmBooking = async () => {
+    try {
+      const response = await fetch('http://localhost:8080/api/renting/convert', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        // Sending the bookingId as a number in the request body
+        body: JSON.stringify(parseInt(bookingId, 10))
+      });
+      if (!response.ok) {
+        throw new Error('Error confirming booking');
+      }
+      console.log(`Booking converted successfully: ${bookingId}`);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
-  const handleDirectRenting = () => {
-    console.log(`Direct Renting - Room: ${rentalInfo.roomId}, Customer: ${rentalInfo.customerId}, Start Date: ${rentalInfo.startDate}, End Date: ${rentalInfo.endDate}`);
-    // API call to process a direct renting
+  // Direct Renting (changed to POST for sending JSON)
+  const handleDirectRenting = async () => {
+    try {
+      const rentingData = {
+        customerId: rentalInfo.customerId,
+        roomId: parseInt(rentalInfo.roomId, 10),
+        startDate: rentalInfo.startDate,
+        endDate: rentalInfo.endDate
+      };
+      const response = await fetch('http://localhost:8080/api/renting/direct', {
+        method: 'POST', // Use POST so we can include a JSON body
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(rentingData)
+      });
+      if (!response.ok) {
+        throw new Error('Error processing direct renting');
+      }
+      console.log(`Direct renting processed successfully for Room: ${rentalInfo.roomId}`);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
-  const handlePayment = () => {
-    console.log(`Processing payment for rental: ${paymentInfo.rentalId}, Amount: ${paymentInfo.amount}`);
-    // API call to insert a customer payment
+  // Insert Customer Payment using GET with query parameters
+  const handlePayment = async () => {
+    try {
+      const url = `http://localhost:8080/api/renting/processpayment?rentingId=${encodeURIComponent(paymentInfo.rentalId)}&amount=${encodeURIComponent(paymentInfo.amount)}`;
+      const response = await fetch(url, {
+        method: 'GET'
+      });
+      if (!response.ok) {
+        throw new Error('Error processing payment');
+      }
+      console.log(`Payment processed successfully for Rental ID: ${paymentInfo.rentalId}`);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (

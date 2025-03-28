@@ -90,8 +90,8 @@ CREATE TABLE renting(
 -- @block
 CREATE TABLE archive(
     archive_id INT PRIMARY KEY AUTO_INCREMENT,
-    booking_id INT NOT NULL,
-    renting_id INT NOT NULL,
+    booking_id INT,
+    renting_id INT,
     FOREIGN KEY (booking_id) REFERENCES booking(booking_id),
     FOREIGN KEY (renting_id) REFERENCES renting(renting_id),
     checkin_date DATE REFERENCES booking(checkin_date),
@@ -129,6 +129,8 @@ GROUP BY h.hotel_id, h.hotel_name;
 
 -- @block
 DROP TABLE IF EXISTS archive;
+
+-- @block
 DROP TABLE IF EXISTS save_book;
 DROP TABLE IF EXISTS save_rent;
 DROP TABLE IF EXISTS renting;
