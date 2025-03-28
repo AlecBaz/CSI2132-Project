@@ -1,0 +1,43 @@
+.view2-container {
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+h2 {
+    color: #2c3e50;
+}
+
+.error {
+    color: red;
+    font-weight: bold;
+}
+
+.view2-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.view2-table th, .view2-table td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+.view2-table th {
+    background: #007bff;
+    color: white;
+}
+
+.view2-table tr:nth-child(even) {
+    background: #f2f2f2;
+}
+
+.view2-table tr:hover {
+    background: #ddd;
+}

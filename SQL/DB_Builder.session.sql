@@ -101,6 +101,32 @@ CREATE TABLE archive(
     end_date DATE REFERENCES renting(end_date)
 )
 
+-- View 1: Available Rooms Per Area
+-- @block
+CREATE VIEW AvailableRoomsPerArea AS
+SELECT 
+    h.city,
+    h.state,
+    COUNT(r.room_id) AS available_rooms
+FROM hotel h
+JOIN room r ON h.hotel_id = r.hotel_id
+LEFT JOIN booking b ON r.room_id = b.room_id AND b.status = 'booked'
+LEFT JOIN renting rent ON r.room_id = rent.room_id
+WHERE b.room_id IS NULL AND rent.room_id IS NULL
+GROUP BY h.city, h.state;
+
+-- View 2: Hotel Room Capacity
+-- @block
+CREATE VIEW HotelRoomCapacity AS
+SELECT 
+    h.hotel_id,
+    h.hotel_name,
+    SUM(r.capacity) AS total_capacity
+FROM hotel h
+JOIN room r ON h.hotel_id = r.hotel_id
+GROUP BY h.hotel_id, h.hotel_name;
+
+
 -- @block
 DROP TABLE IF EXISTS archive;
 DROP TABLE IF EXISTS save_book;

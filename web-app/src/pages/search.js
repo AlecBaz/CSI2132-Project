@@ -77,37 +77,6 @@ function Search() {
       {/* Top Task Bar */}
       <header className="top-nav">
         <div className="logo">MyHotel</div>
-        <nav className="nav-menu">
-          <div className="nav-item">
-            <span>Rooms</span>
-            <div className="dropdown">
-              <a href="#rooms">All Rooms</a>
-              <a href="#luxury">Luxury</a>
-              <a href="#budget">Budget</a>
-            </div>
-          </div>
-          <div className="nav-item">
-            <span>Hotels</span>
-            <div className="dropdown">
-              <a href="#chains">Hotel Chains</a>
-              <a href="#boutique">Boutique</a>
-            </div>
-          </div>
-          <div className="nav-item">
-            <span>Offers</span>
-            <div className="dropdown">
-              <a href="#discounts">Discounts</a>
-              <a href="#packages">Packages</a>
-            </div>
-          </div>
-          <div className="nav-item">
-            <span>Help</span>
-            <div className="dropdown">
-              <a href="#contact">Contact Us</a>
-              <a href="#faq">FAQ</a>
-            </div>
-          </div>
-        </nav>
          {/* New Admin Button on the far right */}
          <div className="admin-link">
           <Link to="/admin">Admin</Link>
