@@ -86,14 +86,14 @@ function Booking() {
   
   const addBooking = async (customerId, startDate, endDate) => {
     try {
-      const response = await fetch(`http://localhost:8080/api/booking/add/${roomID}`, {
+      const response = await fetch(`http://localhost:8080/api/booking/add`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           customerId,
-          roomId: roomInfo?.roomId,
+          roomId: roomID,
           checkinDate: startDate,
           checkoutDate: endDate,
         }),
@@ -108,7 +108,6 @@ function Booking() {
       console.error('Error adding booking:', error);
     }
   };
-  
   
   return (
     <div className="booking-page">

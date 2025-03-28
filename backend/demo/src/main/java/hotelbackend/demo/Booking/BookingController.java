@@ -12,13 +12,18 @@ public class BookingController {
     
     private final BookingService bookingService = new BookingService();
 
-    @PostMapping("/add/{id}")
-    public void addBooking(@RequestBody String customerId, @RequestBody int roomId, @RequestBody Date checkinDate, @RequestBody Date checkoutDate) {
-        try {
-            bookingService.bookRoom(roomId, customerId, checkinDate, checkoutDate);
-        } catch (Exception e) {
-            e.printStackTrace();
-            // Handle the exception appropriately, e.g., log it or return an error response
-        }
+    @PostMapping("/add")
+public void addBooking(@RequestBody Booking booking) {
+    try {
+        bookingService.bookRoom(
+            booking.getRoomId(),
+            String.valueOf(booking.getCustomerId()),
+            new java.sql.Date(booking.getCheckinDate().getTime()),
+            new java.sql.Date(booking.getCheckoutDate().getTime())
+        );
+    } catch (Exception e) {
+        e.printStackTrace();
+        // Optionally return a ResponseEntity here
     }
+}
 }
