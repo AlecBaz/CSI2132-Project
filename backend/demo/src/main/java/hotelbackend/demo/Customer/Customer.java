@@ -3,6 +3,7 @@ package hotelbackend.demo.Customer;
 public class Customer {
     private int customerId;
     private String idType;
+    private String idNumber; // New field added
     private String customerAddress;
     private String customerName;
     private java.sql.Date registrationDate;
@@ -22,6 +23,14 @@ public class Customer {
 
     public void setIdType(String idType) {
         this.idType = idType;
+    }
+
+    public String getIdNumber() { // Getter for idNumber
+        return idNumber;
+    }
+
+    public void setIdNumber(String idNumber) { // Setter for idNumber
+        this.idNumber = idNumber;
     }
 
     public String getCustomerAddress() {

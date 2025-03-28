@@ -58,6 +58,11 @@ CREATE TABLE customer(
 )
 
 -- @block
+ALTER TABLE customer
+ADD COLUMN id_number VARCHAR(255);
+
+
+-- @block
 CREATE TABLE booking(
     booking_id INT PRIMARY KEY AUTO_INCREMENT,
     room_id INT NOT NULL,

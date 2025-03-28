@@ -7,8 +7,8 @@ function Booking() {
   const [roomInfo, setRoomInfo] = useState(null);
   const [existingCustomer, setExistingCustomer] = useState({ userID: '', startDate: '', endDate: '' });
   const [newCustomer, setNewCustomer] = useState({
-    fullName: '',
-    address: '',
+    customerName: '',
+    customerAddress: '',
     idType: '',
     idNumber: '',
     registrationDate: new Date().toISOString().split('T')[0],
@@ -33,14 +33,83 @@ function Booking() {
     setNewCustomer(prev => ({ ...prev, [name]: value }));
   };
 
-  const confirmExistingBooking = () => {
-    console.log('Existing customer booking:', existingCustomer);
+  const confirmExistingBooking = async () => {
+    const { userID, startDate, endDate } = existingCustomer;
+    if (userID && startDate && endDate) {
+      console.log('Existing customer booking:', existingCustomer);
+      await addBooking(userID, startDate, endDate);
+    } else {
+      alert('Please fill out all fields for existing customer booking.');
+    }
   };
-
-  const confirmNewBooking = () => {
-    console.log('New customer registration:', newCustomer);
+  
+  const confirmNewBooking = async () => {
+    const { customerName, customerAddress, idType, idNumber, startDate, endDate } = newCustomer;
+    if (customerName && customerAddress && idType && idNumber && startDate && endDate) {
+      console.log('Registering new customer:', newCustomer);
+      const customerId = await addCustomer();
+      if (customerId) {
+        await addBooking(customerId, startDate, endDate);
+      }
+    } else {
+      alert('Please fill out all fields for new customer registration.');
+    }
   };
+  
 
+  const addCustomer = async () => {
+    try {
+      const response = await fetch('http://localhost:8080/api/customer/add', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          customerName: newCustomer.customerName,
+          customerAddress: newCustomer.customerAddress,
+          idType: newCustomer.idType,
+          idNumber: newCustomer.idNumber,
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to add customer');
+      }
+  
+      console.log('Customer added successfully');
+      return newCustomer.idNumber; // Use this as the customer ID
+    } catch (error) {
+      console.error('Error adding customer:', error);
+      return null;
+    }
+  };
+  
+  const addBooking = async (customerId, startDate, endDate) => {
+    try {
+      const response = await fetch(`http://localhost:8080/api/booking/add/${roomID}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          customerId,
+          roomId: roomInfo?.roomId,
+          checkinDate: startDate,
+          checkoutDate: endDate,
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to add booking');
+      }
+  
+      console.log('Booking added successfully');
+    } catch (error) {
+      console.error('Error adding booking:', error);
+    }
+  };
+  
+  
   return (
     <div className="booking-page">
       {/* Top Navigation Bar */}
@@ -83,8 +152,8 @@ function Booking() {
         <section className="new-customer">
           <h2 className="section-title">New Customer</h2>
           <div className="section-content">
-            <input type="text" name="fullName" placeholder="Full Name" value={newCustomer.fullName} onChange={handleNewCustomerChange} />
-            <input type="text" name="address" placeholder="Address" value={newCustomer.address} onChange={handleNewCustomerChange} />
+            <input type="text" name="customerName" placeholder="Full Name" value={newCustomer.customerName} onChange={handleNewCustomerChange} />
+            <input type="text" name="customerAddress" placeholder="Address" value={newCustomer.customerAddress} onChange={handleNewCustomerChange} />
             <input type="text" name="idType" placeholder="ID Type (e.g. SIN, License)" value={newCustomer.idType} onChange={handleNewCustomerChange} />
             <input type="text" name="idNumber" placeholder="ID Number" value={newCustomer.idNumber} onChange={handleNewCustomerChange} />
             <input type="date" name="startDate" value={newCustomer.startDate} onChange={handleNewCustomerChange} />
