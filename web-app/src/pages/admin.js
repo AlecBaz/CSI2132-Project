@@ -36,10 +36,10 @@ function AdminPanel() {
       <header className="top-nav">
         <div className="logo">MyHotel ADMIN</div>
         <div className="sql-buttons1">
-          <Link to="/admin">SQL View 1</Link>
+          <Link to="/view1">SQL View 1</Link>
         </div>
         <div className="sql-buttons2">
-          <Link to="/admin">SQL View 2</Link>
+          <Link to="/view2">SQL View 2</Link>
         </div>
       </header>
 
