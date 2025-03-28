@@ -1,5 +1,9 @@
 package hotelbackend.demo.Rooms;
 
+
+import hotelbackend.demo.Hotel.Hotel; // Import the Hotel class
+import hotelbackend.demo.Hotel.HotelService;
+
 public class Room {
     private int roomId;
     private int hotelId;
@@ -12,6 +16,8 @@ public class Room {
 
     private String hotelName;
     private String hotelAddress;
+
+    private Hotel hotel; // Add Hotel object
 
     // Getters and Setters
     public int getRoomId() {
@@ -92,5 +98,25 @@ public class Room {
 
     public void setHotelAddress(String hotelAddress) {
         this.hotelAddress = hotelAddress;
+    }
+
+    public Hotel getHotel() { // Getter for Hotel
+        return hotel;
+    }
+
+    public void setHotel(Hotel hotel) { // Setter for Hotel
+        this.hotel = hotel;
+    }
+
+    // Method to set Hotel using getHotelInfo
+    public void setHotelInfo(int hotelId) {
+        Hotel hotel = new Hotel(); // Assuming you have access to the existing getHotelInfo method elsewhere
+        HotelService hotelService = new HotelService(); // Use HotelService to fetch hotel info
+        hotel = hotelService.getHotelInfo(hotelId); // Call the method from HotelService
+        this.setHotel(hotel);
+        if (hotel != null) {
+            this.setHotelName(hotel.getHotelName());
+            this.setHotelAddress(hotel.getHotelAddress());
+        }
     }
 }

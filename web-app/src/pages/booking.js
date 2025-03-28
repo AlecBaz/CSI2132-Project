@@ -17,7 +17,7 @@ function Booking() {
   });
 
   useEffect(() => {
-    fetch(`http://localhost:8080/api/rooms/${roomID}`)
+    fetch(`http://localhost:8080/api/rooms/search/roominfo/${roomID}`)
       .then(res => res.json())
       .then(data => setRoomInfo(data))
       .catch(err => console.error('Error fetching room info:', err));
@@ -55,7 +55,7 @@ function Booking() {
           <div className="section-content">
             {roomInfo ? (
               <>
-                <p><strong>Hotel:</strong> {roomInfo.hotelName}</p>
+                <p><strong>Hotel:</strong> {roomInfo.hotel.hotelName}</p>
                 <p><strong>Room ID:</strong> {roomInfo.roomId}</p>
                 <p><strong>Capacity:</strong> {roomInfo.capacity}</p>
                 <p><strong>Price:</strong> ${roomInfo.price}</p>

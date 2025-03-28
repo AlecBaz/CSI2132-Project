@@ -14,6 +14,7 @@ public class RoomController {
 
     @GetMapping("/filter")
     public List<Room> filterRooms(@RequestParam Date startDate, @RequestParam Date endDate, @RequestParam String chain, @RequestParam int maxPrice, @RequestParam int minPrice, @RequestParam int capacity, @RequestParam String city, @RequestParam String state, @RequestParam int rating) {
+        System.out.println("Entering filterRooms with multiple parameters");
         System.out.println("Searching for rooms with parameters: " +
             "StartDate=" + startDate + ", EndDate=" + endDate + ", Chain=" + chain +
             ", MaxPrice=" + maxPrice + ", MinPrice=" + minPrice +
@@ -21,6 +22,14 @@ public class RoomController {
             ", Rating=" + rating);
         List<Room> rooms = roomService.FilterRooms(startDate, endDate, chain, maxPrice, minPrice, capacity, city, state, rating);
         System.out.println("Found " + rooms.size() + " rooms");
+        System.out.println("Exiting filterRooms with multiple parameters");
         return rooms;
+    }
+
+    @GetMapping("/roominfo/{id}")
+    public Room filterRooms(@PathVariable int id) {
+        System.out.println("Fetching Info for roomid: " + id);
+        Room room = roomService.getRoomInfo(id);
+        return room;
     }
 }
