@@ -40,6 +40,51 @@ function AdminPanel() {
         console.error('Error deleting customer:', error);
       }
     }
+    if (section === 'rooms') {
+      try {
+        const response = await fetch(`http://localhost:8080/api/rooms/delete/${deleteEntry[section]}`, {
+          method: 'DELETE',
+        });
+        if (response.ok) {
+          console.log(`Room with ID ${deleteEntry[section]} deleted successfully.`);
+          setDeleteEntry({ ...deleteEntry, [section]: '' }); // Clear input
+        } else {
+          console.error(`Failed to delete room with ID ${deleteEntry[section]}`);
+        }
+      } catch (error) {
+        console.error('Error deleting room:', error);
+      }
+    }
+    if (section === 'hotels') {
+      try {
+        const response = await fetch(`http://localhost:8080/api/hotel/delete/${deleteEntry[section]}`, {
+          method: 'DELETE',
+        });
+        if (response.ok) {
+          console.log(`Hotel with ID ${deleteEntry[section]} deleted successfully.`);
+          setDeleteEntry({ ...deleteEntry, [section]: '' }); // Clear input
+        } else {
+          console.error(`Failed to delete hotel with ID ${deleteEntry[section]}`);
+        }
+      } catch (error) {
+        console.error('Error deleting hotel:', error);
+      }
+    }
+    if (section === 'employees') {
+      try {
+        const response = await fetch(`http://localhost:8080/api/employee/delete/${deleteEntry[section]}`, {
+          method: 'DELETE',
+        });
+        if (response.ok) {
+          console.log(`Employee with ID ${deleteEntry[section]} deleted successfully.`);
+          setDeleteEntry({ ...deleteEntry, [section]: '' }); // Clear input
+        } else {
+          console.error(`Failed to delete employee with ID ${deleteEntry[section]}`);
+        }
+      } catch (error) {
+        console.error('Error deleting employee:', error);
+      }
+    }
   };
 
   const handleEdit = (section) => {

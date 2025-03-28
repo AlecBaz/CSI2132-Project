@@ -1,6 +1,10 @@
 package hotelbackend.demo.Hotel;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -99,5 +103,21 @@ public class HotelService {
         }
 
         return hotel;
+    }
+
+    public boolean deleteHotel(int hotelId) throws SQLException {
+        String jdbcURL = "jdbc:mysql://34.95.43.176:3306/HotelDB?useSSL=false";
+        String dbUser = "root";
+        String dbPassword = "AlecSam2025";
+
+        String query = "DELETE FROM hotel WHERE hotel_id = ?";
+
+        try (Connection connection = DriverManager.getConnection(jdbcURL, dbUser, dbPassword);
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setInt(1, hotelId);
+            int rowsAffected = statement.executeUpdate();
+            return rowsAffected > 0;
+        }
     }
 }
