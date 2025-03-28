@@ -1,6 +1,10 @@
 package hotelbackend.demo.Customer;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class CustomerService {
     
@@ -52,6 +56,22 @@ public class CustomerService {
             } else {
                 throw new SQLException("Customer with the given ID number does not exist.");
             }
+        }
+    }
+
+    public boolean deleteCustomer(int customerId) throws SQLException {
+        String jdbcURL = "jdbc:mysql://34.95.43.176:3306/HotelDB?useSSL=false";
+        String dbUser = "root";
+        String dbPassword = "AlecSam2025";
+
+        String query = "DELETE FROM customer WHERE customer_id = ?";
+
+        try (Connection connection = DriverManager.getConnection(jdbcURL, dbUser, dbPassword);
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setInt(1, customerId);
+            int rowsAffected = statement.executeUpdate();
+            return rowsAffected > 0;
         }
     }
 }

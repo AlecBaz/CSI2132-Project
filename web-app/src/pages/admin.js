@@ -23,8 +23,23 @@ function AdminPanel() {
     console.log(`Add to ${section}:`, entries[section]);
   };
 
-  const handleDelete = (section) => {
+  const handleDelete = async (section) => {
     console.log(`Delete from ${section}: ID ${deleteEntry[section]}`);
+    if (section === 'customers') {
+      try {
+        const response = await fetch(`http://localhost:8080/api/customer/delete/${deleteEntry[section]}`, {
+          method: 'DELETE',
+        });
+        if (response.ok) {
+          console.log(`Customer with ID ${deleteEntry[section]} deleted successfully.`);
+          setDeleteEntry({ ...deleteEntry, [section]: '' }); // Clear input
+        } else {
+          console.error(`Failed to delete customer with ID ${deleteEntry[section]}`);
+        }
+      } catch (error) {
+        console.error('Error deleting customer:', error);
+      }
+    }
   };
 
   const handleEdit = (section) => {
