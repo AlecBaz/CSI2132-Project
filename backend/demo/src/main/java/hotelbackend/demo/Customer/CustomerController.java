@@ -47,4 +47,21 @@ public class CustomerController {
             return false;
         }
     }
+
+    @PostMapping("/edit/{id}")
+    public boolean editCustomer(@PathVariable int id, @RequestBody Customer customer) {
+        try {
+            return customerService.updateCustomer(
+                id,
+                customer.getCustomerName(),
+                customer.getCustomerAddress(),
+                customer.getIdType(),
+                customer.getIdNumber(),
+                customer.getRegistrationDate()
+            );
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

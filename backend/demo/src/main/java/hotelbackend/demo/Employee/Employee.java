@@ -4,7 +4,7 @@ public class Employee {
     private int employeeId;
     private String employeeName;
     private String employeeAddress;
-    private String SIN;
+    private int SIN;
     private String position;
 
     // Getters and Setters
@@ -32,11 +32,11 @@ public class Employee {
         this.employeeAddress = employeeAddress;
     }
 
-    public String getSIN() {
+    public int getSIN() {
         return SIN;
     }
 
-    public void setSIN(String SIN) {
+    public void setSIN(int SIN) {
         this.SIN = SIN;
     }
 

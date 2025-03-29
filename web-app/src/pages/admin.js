@@ -87,8 +87,103 @@ function AdminPanel() {
     }
   };
 
-  const handleEdit = (section) => {
+  const handleEdit = async (section) => {
     console.log(`Edit ${section}: ID ${editEntries.id} to ${editEntries.newEntry}`);
+    if (section === 'customers') {
+      try {
+        const response = await fetch(`http://localhost:8080/api/customer/edit/${editEntries.id}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            customerName: entries[section].customer_name,
+            customerAddress: entries[section].customer_address,
+            idType: entries[section].id_type,
+            idNumber: entries[section].id_number,
+            registrationDate: entries[section].registration_date,
+          }),
+        });
+        if (response.ok) {
+          console.log(`Customer with ID ${editEntries.id} updated successfully.`);
+          setEditEntries({ id: '', newEntry: '' }); // Clear input
+        } else {
+          console.error(`Failed to update customer with ID ${editEntries.id}`);
+        }
+      } catch (error) {
+        console.error('Error updating customer:', error);
+      }
+    }
+    if (section === 'rooms') {
+      try {
+        const response = await fetch(`http://localhost:8080/api/rooms/edit/${editEntries.id}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            view: entries[section].view,
+            amentities: entries[section].amentities,
+            damages: entries[section].damages,
+          }),
+        });
+        if (response.ok) {
+          console.log(`Room with ID ${editEntries.id} updated successfully.`);
+          setEditEntries({ id: '', newEntry: '' }); // Clear input
+        } else {
+          console.error(`Failed to update room with ID ${editEntries.id}`);
+        }
+      } catch (error) {
+        console.error('Error updating room:', error);
+      }
+    }
+    if (section === 'hotels') {
+      try {
+        const response = await fetch(`http://localhost:8080/api/hotel/edit/${editEntries.id}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            hotelName: entries[section].hotel_name,
+            rating: entries[section].rating,
+            hotelAddress: entries[section].hotel_address,
+          }),
+        });
+        if (response.ok) {
+          console.log(`Hotel with ID ${editEntries.id} updated successfully.`);
+          setEditEntries({ id: '', newEntry: '' }); // Clear input
+        } else {
+          console.error(`Failed to update hotel with ID ${editEntries.id}`);
+        }
+      } catch (error) {
+        console.error('Error updating hotel:', error);
+      }
+    }
+    if (section === 'employees') {
+      try {
+        const response = await fetch(`http://localhost:8080/api/employee/edit/${editEntries.id}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            employeeName: entries[section].employee_name,
+            employeeAddress: entries[section].employee_address,
+            SIN: entries[section].SIN,
+            position: entries[section].employee_position,
+          }),
+        });
+        if (response.ok) {
+          console.log(`Employee with ID ${editEntries.id} updated successfully.`);
+          setEditEntries({ id: '', newEntry: '' }); // Clear input
+        } else {
+          console.error(`Failed to update employee with ID ${editEntries.id}`);
+        }
+      } catch (error) {
+        console.error('Error updating employee:', error);
+      }
+    }
   };
 
   return (
@@ -159,7 +254,7 @@ function AdminPanel() {
                   <input type="text" placeholder={`Enter ${section} ID to edit`} value={editEntries.id} onChange={(e) => handleEditChange(e, 'id')} />
                   <input type="text" placeholder="Employee Name" onChange={(e) => handleChange(e, section, 'employee_name')} />
                   <input type="text" placeholder="Employee Address" onChange={(e) => handleChange(e, section, 'employee_address')} />
-                  <input type="text" placeholder="SIN" onChange={(e) => handleChange(e, section, 'SIN')} />
+                  <input type="number" placeholder="SIN" onChange={(e) => handleChange(e, section, 'SIN')} />
                   <input type="text" placeholder="Position" onChange={(e) => handleChange(e, section, 'employee_position')} />
                 </>
               )}

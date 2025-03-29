@@ -120,4 +120,24 @@ public class HotelService {
             return rowsAffected > 0;
         }
     }
+
+    public boolean updateHotel(int hotelId, String hotelName, int rating, String hotelAddress) throws SQLException {
+        String jdbcURL = "jdbc:mysql://34.95.43.176:3306/HotelDB?useSSL=false";
+        String dbUser = "root";
+        String dbPassword = "AlecSam2025";
+
+        String query = "UPDATE hotel SET hotel_name = ?, rating = ?, hotel_address = ? WHERE hotel_id = ?";
+
+        try (Connection connection = DriverManager.getConnection(jdbcURL, dbUser, dbPassword);
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setString(1, hotelName);
+            statement.setInt(2, rating);
+            statement.setString(3, hotelAddress);
+            statement.setInt(4, hotelId);
+
+            int rowsAffected = statement.executeUpdate();
+            return rowsAffected > 0;
+        }
+    }
 }

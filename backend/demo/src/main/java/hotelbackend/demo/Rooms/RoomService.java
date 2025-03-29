@@ -129,4 +129,24 @@ public class RoomService {
             return rowsAffected > 0;
         }
     }
+
+    public boolean updateRoom(int customerId, String view, String amentities, String damages) throws SQLException {
+        String jdbcURL = "jdbc:mysql://34.95.43.176:3306/HotelDB?useSSL=false";
+        String dbUser = "root";
+        String dbPassword = "AlecSam2025";
+
+        String query = "UPDATE room SET view = ?, amentities = ?, damages = ? WHERE room_id = ?";
+
+        try (Connection connection = DriverManager.getConnection(jdbcURL, dbUser, dbPassword);
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setString(1, view);
+            statement.setString(2, amentities);
+            statement.setString(3, damages);
+            statement.setInt(4, customerId);
+
+            int rowsAffected = statement.executeUpdate();
+            return rowsAffected > 0;
+        }
+    }
 }

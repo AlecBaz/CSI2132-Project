@@ -74,4 +74,26 @@ public class CustomerService {
             return rowsAffected > 0;
         }
     }
+
+    public boolean updateCustomer(int customerId, String fullName, String address, String idType, String idNumber, java.sql.Date registrationDate) throws SQLException {
+        String jdbcURL = "jdbc:mysql://34.95.43.176:3306/HotelDB?useSSL=false";
+        String dbUser = "root";
+        String dbPassword = "AlecSam2025";
+
+        String query = "UPDATE customer SET customer_name = ?, customer_address = ?, id_type = ?, id_number = ?, registration_date = ? WHERE customer_id = ?";
+
+        try (Connection connection = DriverManager.getConnection(jdbcURL, dbUser, dbPassword);
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setString(1, fullName);
+            statement.setString(2, address);
+            statement.setString(3, idType);
+            statement.setString(4, idNumber);
+            statement.setDate(5, registrationDate);
+            statement.setInt(6, customerId);
+
+            int rowsAffected = statement.executeUpdate();
+            return rowsAffected > 0;
+        }
+    }
 }
