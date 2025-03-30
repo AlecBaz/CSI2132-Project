@@ -32,9 +32,16 @@ public class HotelController {
         try {
             return hotelService.updateHotel(
                 id,
+                hotel.getChainId(),
                 hotel.getHotelName(),
                 hotel.getRating(),
-                hotel.getHotelAddress()
+                hotel.getHotelAddress(),
+                hotel.getCity(),
+                hotel.getState(),
+                hotel.getAmountOfRooms(),
+                hotel.getContactEmail(),
+                hotel.getContactPhone(),
+                hotel.getManagerId()
             );
         } catch (SQLException e) {
             e.printStackTrace();

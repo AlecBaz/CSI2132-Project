@@ -121,20 +121,27 @@ public class HotelService {
         }
     }
 
-    public boolean updateHotel(int hotelId, String hotelName, int rating, String hotelAddress) throws SQLException {
+    public boolean updateHotel(int hotelId, int chainId, String hotelName, int rating, String hotelAddress, String city, String state, int amountOfRooms, String contactEmail, String contactPhone, int managerId) throws SQLException {
         String jdbcURL = "jdbc:mysql://34.95.43.176:3306/HotelDB?useSSL=false";
         String dbUser = "root";
         String dbPassword = "AlecSam2025";
 
-        String query = "UPDATE hotel SET hotel_name = ?, rating = ?, hotel_address = ? WHERE hotel_id = ?";
+        String query = "UPDATE hotel SET chain_id = ?, hotel_name = ?, rating = ?, hotel_address = ?, city = ?, state = ?, amount_of_rooms = ?, contact_email = ?, contact_phone = ?, manager_id = ? WHERE hotel_id = ?";
 
         try (Connection connection = DriverManager.getConnection(jdbcURL, dbUser, dbPassword);
              PreparedStatement statement = connection.prepareStatement(query)) {
 
-            statement.setString(1, hotelName);
-            statement.setInt(2, rating);
-            statement.setString(3, hotelAddress);
-            statement.setInt(4, hotelId);
+            statement.setInt(1, chainId);
+            statement.setString(2, hotelName);
+            statement.setInt(3, rating);
+            statement.setString(4, hotelAddress);
+            statement.setString(5, city);
+            statement.setString(6, state);
+            statement.setInt(7, amountOfRooms);
+            statement.setString(8, contactEmail);
+            statement.setString(9, contactPhone);
+            statement.setInt(10, managerId);
+            statement.setInt(11, hotelId);
 
             int rowsAffected = statement.executeUpdate();
             return rowsAffected > 0;

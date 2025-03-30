@@ -257,6 +257,7 @@ function AdminPanel() {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
+            chainId: parseInt(entries[section].chain_id, 10),
             hotelName: entries[section].hotel_name,
             rating: parseInt(entries[section].rating, 10),
             hotelAddress: entries[section].hotel_address,
@@ -342,7 +343,6 @@ function AdminPanel() {
               )}
               {section === 'hotels' && (
                 <>
-                  <input type="text" placeholder="Hotel ID" onChange={(e) => handleEditChange(e, section, 'hotel_id')} />
                   <input type="number" placeholder="Chain ID" onChange={(e) => handleChange(e, section, 'chain_id')} />
                   <input type="text" placeholder="Hotel Name" onChange={(e) => handleChange(e, section, 'hotel_name')} />
                   <input type="number" placeholder="Rating" onChange={(e) => handleChange(e, section, 'rating')} />
@@ -357,7 +357,6 @@ function AdminPanel() {
               )}
               {section === 'rooms' && (
                 <>
-                  <input type="text" placeholder="Room ID" onChange={(e) => handleEditChange(e, section, 'room_id')} />
                   <input type="text" placeholder="Hotel ID" onChange={(e) => handleChange(e, section, 'hotel_id')} />
                   <input type="number" placeholder="Price" onChange={(e) => handleChange(e, section, 'price')} />
                   <input type="text" placeholder="Room View" onChange={(e) => handleChange(e, section, 'view')} />
