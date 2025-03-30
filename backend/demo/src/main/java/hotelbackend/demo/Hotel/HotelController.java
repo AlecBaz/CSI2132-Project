@@ -41,4 +41,27 @@ public class HotelController {
             return false;
         }
     }
+
+    @PostMapping("/add")
+    public void addHotel(@RequestBody Hotel hotel) {
+        try {
+            hotelService.addHotel(
+                hotel.getHotelId(),
+                hotel.getChainId(),
+                hotel.getHotelName(),
+                hotel.getRating(),
+                hotel.getHotelAddress(),
+                hotel.getCity(),
+                hotel.getState(),
+                hotel.getAmountOfRooms(),
+                hotel.getContactEmail(),
+                hotel.getContactPhone(),
+                hotel.getManagerId()
+            );
+            System.out.println("Hotel added successfully: " + hotel);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println("Error adding hotel: " + hotel);
+        }
+    }
 }

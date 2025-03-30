@@ -7,6 +7,8 @@ public class Hotel {
     private String hotelName;
     private int rating;
     private String hotelAddress;
+    private String City;
+    private String State;
     private int amountOfRooms;
     private String contactEmail;
     private String contactPhone;
@@ -51,6 +53,22 @@ public class Hotel {
 
     public void setHotelAddress(String hotelAddress) {
         this.hotelAddress = hotelAddress;
+    }
+
+    public String getCity() {
+        return City;
+    }
+
+    public void setCity(String city) {
+        this.City = city;
+    }
+
+    public String getState() {
+        return State;
+    }
+
+    public void setState(String state) {
+        this.State = state;
     }
 
     public int getAmountOfRooms() {

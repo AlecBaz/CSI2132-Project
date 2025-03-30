@@ -149,4 +149,61 @@ public class RoomService {
             return rowsAffected > 0;
         }
     }
+
+    public void addRoom(int roomId, int hotelId, double price, String view, String amenities, boolean extendable, int capacity, String damages) throws SQLException {
+        String jdbcURL = "jdbc:mysql://34.95.43.176:3306/HotelDB?useSSL=false";
+        String dbUser = "root";
+        String dbPassword = "AlecSam2025";
+
+        String checkQuery = "SELECT COUNT(*) FROM room WHERE room_id = ?";
+        String insertQuery = "INSERT INTO room (room_id, hotel_id, price, view, amentities, extendable, capacity, damages) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try (Connection connection = DriverManager.getConnection(jdbcURL, dbUser, dbPassword)) {
+            // Check if the room already exists
+            try (PreparedStatement checkStmt = connection.prepareStatement(checkQuery)) {
+                checkStmt.setInt(1, roomId);
+                ResultSet resultSet = checkStmt.executeQuery();
+                if (resultSet.next() && resultSet.getInt(1) > 0) {
+                    throw new SQLException("Room with this ID already exists.");
+                }
+            }
+
+            // Insert the new room
+            try (PreparedStatement insertStmt = connection.prepareStatement(insertQuery)) {
+                insertStmt.setInt(1, roomId);
+                insertStmt.setInt(2, hotelId);
+                insertStmt.setDouble(3, price);
+                insertStmt.setString(4, view);
+                insertStmt.setString(5, amenities);
+                insertStmt.setBoolean(6, extendable);
+                insertStmt.setInt(7, capacity);
+                insertStmt.setString(8, damages);
+                insertStmt.executeUpdate();
+            }
+        }
+    }
+
+    public boolean updateRoom(int roomId, int hotelId, double price, String view, String amenities, boolean extendable, int capacity, String damages) throws SQLException {
+        String jdbcURL = "jdbc:mysql://34.95.43.176:3306/HotelDB?useSSL=false";
+        String dbUser = "root";
+        String dbPassword = "AlecSam2025";
+
+        String query = "UPDATE room SET price = ?, view = ?, amentities = ?, extendable = ?, capacity = ?, damages = ? WHERE room_id = ? AND hotel_id = ?";
+
+        try (Connection connection = DriverManager.getConnection(jdbcURL, dbUser, dbPassword);
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setDouble(1, price);
+            statement.setString(2, view);
+            statement.setString(3, amenities);
+            statement.setBoolean(4, extendable);
+            statement.setInt(5, capacity);
+            statement.setString(6, damages);
+            statement.setInt(7, roomId);
+            statement.setInt(8, hotelId);
+
+            int rowsAffected = statement.executeUpdate();
+            return rowsAffected > 0;
+        }
+    }
 }

@@ -140,4 +140,40 @@ public class HotelService {
             return rowsAffected > 0;
         }
     }
+
+    public void addHotel(int hotelId, int chainId, String hotelName, int rating, String hotelAddress, String city, String state, int amountOfRooms, String contactEmail, String contactPhone, int managerId) throws SQLException {
+        String jdbcURL = "jdbc:mysql://34.95.43.176:3306/HotelDB?useSSL=false";
+        String dbUser = "root";
+        String dbPassword = "AlecSam2025";
+
+        String checkQuery = "SELECT COUNT(*) FROM hotel WHERE hotel_id = ?";
+        String insertQuery = "INSERT INTO hotel (hotel_id, chain_id, hotel_name, rating, hotel_address, city, state, amount_of_rooms, contact_email, contact_phone, manager_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try (Connection connection = DriverManager.getConnection(jdbcURL, dbUser, dbPassword)) {
+            // Check if the hotel already exists
+            try (PreparedStatement checkStmt = connection.prepareStatement(checkQuery)) {
+                checkStmt.setInt(1, hotelId);
+                ResultSet resultSet = checkStmt.executeQuery();
+                if (resultSet.next() && resultSet.getInt(1) > 0) {
+                    throw new SQLException("Hotel with this ID already exists.");
+                }
+            }
+
+            // Insert the new hotel
+            try (PreparedStatement insertStmt = connection.prepareStatement(insertQuery)) {
+                insertStmt.setInt(1, hotelId);
+                insertStmt.setInt(2, chainId);
+                insertStmt.setString(3, hotelName);
+                insertStmt.setInt(4, rating);
+                insertStmt.setString(5, hotelAddress);
+                insertStmt.setString(6, city);
+                insertStmt.setString(7, state);
+                insertStmt.setInt(8, amountOfRooms);
+                insertStmt.setString(9, contactEmail);
+                insertStmt.setString(10, contactPhone);
+                insertStmt.setInt(11, managerId);
+                insertStmt.executeUpdate();
+            }
+        }
+    }
 }

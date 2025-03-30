@@ -35,11 +35,30 @@ public class EmployeeController {
                 employee.getEmployeeName(),
                 employee.getEmployeeAddress(),
                 employee.getSIN(),
-                employee.getPosition()
+                employee.getPosition(),
+                employee.getHotelId()
             );
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
+        }
+    }
+
+    @PostMapping("/add")
+    public void addEmployee(@RequestBody Employee employee) {
+        try {
+            employeeService.addEmployee(
+                employee.getEmployeeId(),
+                employee.getEmployeeName(),
+                employee.getEmployeeAddress(),
+                employee.getSIN(),
+                employee.getPosition(),
+                employee.getHotelId()
+            );
+            System.out.println("Employee added successfully: " + employee);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println("Error adding employee: " + employee);
         }
     }
 }

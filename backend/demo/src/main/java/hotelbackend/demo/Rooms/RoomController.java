@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import hotelbackend.demo.Customer.Customer;
-
 @CrossOrigin(origins = "http://localhost:3000") // Allow React dev server
 @RestController
 @RequestMapping("/api/rooms")
@@ -54,13 +52,37 @@ public class RoomController {
         }
     }
 
-    @PostMapping("/edit/{id}")
-    public boolean editRoom(@PathVariable int id, @RequestBody Room room) {
+    @PostMapping("/add")
+    public void addRoom(@RequestBody Room room) {
         try {
-            return roomService.updateRoom(
-                id,
+            roomService.addRoom(
+                room.getRoomId(),
+                room.getHotelId(),
+                room.getPrice(),
                 room.getView(),
                 room.getAmentities(),
+                room.isExtendable(),
+                room.getCapacity(),
+                room.getDamages()
+            );
+            System.out.println("Room added successfully: " + room);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println("Error adding room: " + room);
+        }
+    }
+
+    @PostMapping("/edit/{roomId}/{hotelId}")
+    public boolean editRoom(@PathVariable int roomId, @PathVariable int hotelId, @RequestBody Room room) {
+        try {
+            return roomService.updateRoom(
+                roomId,
+                hotelId,
+                room.getPrice(),
+                room.getView(),
+                room.getAmentities(),
+                room.isExtendable(),
+                room.getCapacity(),
                 room.getDamages()
             );
         } catch (SQLException e) {

@@ -19,8 +19,117 @@ function AdminPanel() {
     setEditEntries({ ...editEntries, [field]: e.target.value });
   };
 
-  const handleAdd = (section) => {
+  const handleAdd = async (section) => {
     console.log(`Add to ${section}:`, entries[section]);
+    if (section === 'customers') {
+      try {
+        const response = await fetch('http://localhost:8080/api/customer/add', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            customerName: entries[section].customer_name,
+            customerAddress: entries[section].customer_address,
+            idType: entries[section].id_type,
+            idNumber: entries[section].id_number,
+          }),
+        });
+        if (response.ok) {
+          console.log('Customer added successfully.');
+          setEntries({ ...entries, [section]: {} }); // Clear input fields
+        } else {
+          console.error('Failed to add customer.');
+        }
+      } catch (error) {
+        console.error('Error adding customer:', error);
+      }
+    }
+    if (section === 'employees') {
+      try {
+        const response = await fetch('http://localhost:8080/api/employee/add', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            employeeId: parseInt(entries[section].employee_id, 10), // Include employee_id
+            employeeName: entries[section].employee_name,
+            employeeAddress: entries[section].employee_address,
+            SIN: parseInt(entries[section].SIN, 10), // Ensure SIN is passed as an integer
+            position: entries[section].employee_position,
+            hotelId: parseInt(entries[section].hotel_id, 10), // Include hotel_id
+          }),
+        });
+        if (response.ok) {
+          console.log('Employee added successfully.');
+          setEntries({ ...entries, [section]: {} }); // Clear input fields
+        } else {
+          console.error('Failed to add employee.');
+        }
+      } catch (error) {
+        console.error('Error adding employee:', error);
+      }
+    }
+    if (section === 'hotels') {
+      try {
+        const response = await fetch('http://localhost:8080/api/hotel/add', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            hotelId: parseInt(entries[section].hotel_id, 10),
+            chainId: parseInt(entries[section].chain_id, 10),
+            hotelName: entries[section].hotel_name,
+            rating: parseInt(entries[section].rating, 10),
+            hotelAddress: entries[section].hotel_address,
+            city: entries[section].city,
+            state: entries[section].state,
+            amountOfRooms: parseInt(entries[section].amount_of_rooms, 10),
+            contactEmail: entries[section].contact_email,
+            contactPhone: entries[section].contact_phone,
+            managerId: parseInt(entries[section].manager_id, 10),
+          }),
+        });
+        if (response.ok) {
+          console.log('Hotel added successfully.');
+          setEntries({ ...entries, [section]: {} }); // Clear input fields
+        } else {
+          console.error('Failed to add hotel.');
+        }
+      } catch (error) {
+        console.error('Error adding hotel:', error);
+      }
+    }
+    if (section === 'rooms') {
+      try {
+        const response = await fetch('http://localhost:8080/api/rooms/add', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            roomId: parseInt(entries[section].room_id, 10),
+            hotelId: parseInt(entries[section].hotel_id, 10),
+            price: parseFloat(entries[section].price),
+            view: entries[section].view,
+            amentities: entries[section].amentities,
+            extendable: entries[section].extendable === 'true',
+            capacity: parseInt(entries[section].capacity, 10),
+            damages: entries[section].damages,
+          }),
+        });
+        if (response.ok) {
+          console.log('Room added successfully.');
+          setEntries({ ...entries, [section]: {} }); // Clear input fields
+        } else {
+          console.error('Failed to add room.');
+        }
+      } catch (error) {
+        console.error('Error adding room:', error);
+      }
+    }
   };
 
   const handleDelete = async (section) => {
@@ -116,22 +225,25 @@ function AdminPanel() {
     }
     if (section === 'rooms') {
       try {
-        const response = await fetch(`http://localhost:8080/api/rooms/edit/${editEntries.id}`, {
+        const response = await fetch(`http://localhost:8080/api/rooms/edit/${editEntries.id}/${entries[section].hotel_id}`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
+            price: parseFloat(entries[section].price),
             view: entries[section].view,
             amentities: entries[section].amentities,
+            extendable: entries[section].extendable === 'true',
+            capacity: parseInt(entries[section].capacity, 10),
             damages: entries[section].damages,
           }),
         });
         if (response.ok) {
-          console.log(`Room with ID ${editEntries.id} updated successfully.`);
+          console.log(`Room with ID ${editEntries.id} and Hotel ID ${entries[section].hotel_id} updated successfully.`);
           setEditEntries({ id: '', newEntry: '' }); // Clear input
         } else {
-          console.error(`Failed to update room with ID ${editEntries.id}`);
+          console.error(`Failed to update room with ID ${editEntries.id} and Hotel ID ${entries[section].hotel_id}`);
         }
       } catch (error) {
         console.error('Error updating room:', error);
@@ -146,8 +258,14 @@ function AdminPanel() {
           },
           body: JSON.stringify({
             hotelName: entries[section].hotel_name,
-            rating: entries[section].rating,
+            rating: parseInt(entries[section].rating, 10),
             hotelAddress: entries[section].hotel_address,
+            city: entries[section].city,
+            state: entries[section].state,
+            amountOfRooms: parseInt(entries[section].amount_of_rooms, 10),
+            contactEmail: entries[section].contact_email,
+            contactPhone: entries[section].contact_phone,
+            managerId: parseInt(entries[section].manager_id, 10),
           }),
         });
         if (response.ok) {
@@ -209,27 +327,42 @@ function AdminPanel() {
                   <input type="text" placeholder="Customer Name" onChange={(e) => handleChange(e, section, 'customer_name')} />
                   <input type="text" placeholder="Customer Address" onChange={(e) => handleChange(e, section, 'customer_address')} />
                   <input type="text" placeholder="ID Type" onChange={(e) => handleChange(e, section, 'id_type')} />
+                  <input type="text" placeholder="ID Number" onChange={(e) => handleChange(e, section, 'id_number')} />
                 </>
               )}
               {section === 'employees' && (
                 <>
+                  <input type="number" placeholder="Employee ID" onChange={(e) => handleChange(e, section, 'employee_id')} />
                   <input type="text" placeholder="Employee Name" onChange={(e) => handleChange(e, section, 'employee_name')} />
                   <input type="text" placeholder="Employee Address" onChange={(e) => handleChange(e, section, 'employee_address')} />
-                  <input type="text" placeholder="SIN" onChange={(e) => handleChange(e, section, 'SIN')} />
+                  <input type="number" placeholder="SIN" onChange={(e) => handleChange(e, section, 'SIN')} />
                   <input type="text" placeholder="Position" onChange={(e) => handleChange(e, section, 'employee_position')} />
+                  <input type="number" placeholder="Hotel ID" onChange={(e) => handleChange(e, section, 'hotel_id')} />
                 </>
               )}
               {section === 'hotels' && (
                 <>
+                  <input type="text" placeholder="Hotel ID" onChange={(e) => handleEditChange(e, section, 'hotel_id')} />
+                  <input type="number" placeholder="Chain ID" onChange={(e) => handleChange(e, section, 'chain_id')} />
                   <input type="text" placeholder="Hotel Name" onChange={(e) => handleChange(e, section, 'hotel_name')} />
                   <input type="number" placeholder="Rating" onChange={(e) => handleChange(e, section, 'rating')} />
                   <input type="text" placeholder="Hotel Address" onChange={(e) => handleChange(e, section, 'hotel_address')} />
+                  <input type="text" placeholder="City" onChange={(e) => handleChange(e, section, 'city')} />
+                  <input type="text" placeholder="State" onChange={(e) => handleChange(e, section, 'state')} />
+                  <input type="text" placeholder="Amount of Rooms" onChange={(e) => handleChange(e, section, 'amount_of_rooms')} />
+                  <input type="text" placeholder="Contact Email" onChange={(e) => handleChange(e, section, 'contact_email')} />
+                  <input type="text" placeholder="Contact Phone Number" onChange={(e) => handleChange(e, section, 'contact_phone')} />
+                  <input type="number" placeholder="Manager ID" onChange={(e) => handleChange(e, section, 'manager_id')} />
                 </>
               )}
               {section === 'rooms' && (
                 <>
+                  <input type="text" placeholder="Room ID" onChange={(e) => handleEditChange(e, section, 'room_id')} />
+                  <input type="text" placeholder="Hotel ID" onChange={(e) => handleChange(e, section, 'hotel_id')} />
+                  <input type="number" placeholder="Price" onChange={(e) => handleChange(e, section, 'price')} />
                   <input type="text" placeholder="Room View" onChange={(e) => handleChange(e, section, 'view')} />
                   <input type="text" placeholder="Amenities" onChange={(e) => handleChange(e, section, 'amentities')} />
+                  <input type="number" placeholder="Capacity" onChange={(e) => handleChange(e, section, 'capacity')} />
                   <input type="text" placeholder="Damages" onChange={(e) => handleChange(e, section, 'damages')} />
                 </>
               )}
@@ -246,6 +379,7 @@ function AdminPanel() {
                   <input type="text" placeholder="Customer Name" onChange={(e) => handleChange(e, section, 'customer_name')} />
                   <input type="text" placeholder="Customer Address" onChange={(e) => handleChange(e, section, 'customer_address')} />
                   <input type="text" placeholder="ID Type" onChange={(e) => handleChange(e, section, 'id_type')} />
+                  <input type="text" placeholder="ID Number" onChange={(e) => handleChange(e, section, 'id_number')} />
                   <input type="date" placeholder="Registration Date" onChange={(e) => handleChange(e, section, 'registration_date')} />
                 </>
               )}
@@ -256,21 +390,32 @@ function AdminPanel() {
                   <input type="text" placeholder="Employee Address" onChange={(e) => handleChange(e, section, 'employee_address')} />
                   <input type="number" placeholder="SIN" onChange={(e) => handleChange(e, section, 'SIN')} />
                   <input type="text" placeholder="Position" onChange={(e) => handleChange(e, section, 'employee_position')} />
+                  <input type="number" placeholder="Hotel ID" onChange={(e) => handleChange(e, section, 'hotel_id')} />
                 </>
               )}
               {section === 'hotels' && (
                 <>
                   <input type="text" placeholder={`Enter ${section} ID to edit`} value={editEntries.id} onChange={(e) => handleEditChange(e, 'id')} />
+                  <input type="number" placeholder="Chain ID" onChange={(e) => handleChange(e, section, 'chain_id')} />
                   <input type="text" placeholder="Hotel Name" onChange={(e) => handleChange(e, section, 'hotel_name')} />
                   <input type="number" placeholder="Rating" onChange={(e) => handleChange(e, section, 'rating')} />
                   <input type="text" placeholder="Hotel Address" onChange={(e) => handleChange(e, section, 'hotel_address')} />
+                  <input type="text" placeholder="City" onChange={(e) => handleChange(e, section, 'city')} />
+                  <input type="text" placeholder="State" onChange={(e) => handleChange(e, section, 'state')} />
+                  <input type="text" placeholder="Amount of Rooms" onChange={(e) => handleChange(e, section, 'amount_of_rooms')} />
+                  <input type="text" placeholder="Contact Email" onChange={(e) => handleChange(e, section, 'contact_email')} />
+                  <input type="text" placeholder="Contact Phone Number" onChange={(e) => handleChange(e, section, 'contact_phone')} />
+                  <input type="number" placeholder="Manager ID" onChange={(e) => handleChange(e, section, 'manager_id')} />
                 </>
               )}
               {section === 'rooms' && (
                 <>
                   <input type="text" placeholder={`Enter ${section} ID to edit`} value={editEntries.id} onChange={(e) => handleEditChange(e, 'id')} />
+                  <input type="text" placeholder="Hotel ID" onChange={(e) => handleChange(e, section, 'hotel_id')} />
+                  <input type="number" placeholder="Price" onChange={(e) => handleChange(e, section, 'price')} />
                   <input type="text" placeholder="Room View" onChange={(e) => handleChange(e, section, 'view')} />
                   <input type="text" placeholder="Amenities" onChange={(e) => handleChange(e, section, 'amentities')} />
+                  <input type="number" placeholder="Capacity" onChange={(e) => handleChange(e, section, 'capacity')} />
                   <input type="text" placeholder="Damages" onChange={(e) => handleChange(e, section, 'damages')} />
                 </>
               )}

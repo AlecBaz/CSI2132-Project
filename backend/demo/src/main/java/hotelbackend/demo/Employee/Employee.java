@@ -5,6 +5,7 @@ public class Employee {
     private String employeeName;
     private String employeeAddress;
     private int SIN;
+    private int hotelId;
     private String position;
 
     // Getters and Setters
@@ -46,5 +47,13 @@ public class Employee {
 
     public void setPosition(String position) {
         this.position = position;
+    }
+
+    public int getHotelId() {
+        return hotelId;
+    }
+
+    public void setHotelId(int hotelId) {
+        this.hotelId = hotelId;
     }
 }

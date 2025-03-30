@@ -34,7 +34,6 @@ public class CustomerController {
             logger.info("Customer added successfully: {}", customer);
         } catch (SQLException e) {
             logger.error("Error adding customer: {}", customer, e);
-            // Optionally return a ResponseEntity with error status here
         }
     }
 
