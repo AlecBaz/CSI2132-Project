@@ -75,7 +75,7 @@ public class RoomController {
     @PostMapping("/edit/{roomId}/{hotelId}")
     public boolean editRoom(@PathVariable int roomId, @PathVariable int hotelId, @RequestBody Room room) {
         try {
-            return roomService.updateRoom(
+            boolean isUpdated = roomService.updateRoom(
                 roomId,
                 hotelId,
                 room.getPrice(),
@@ -85,6 +85,12 @@ public class RoomController {
                 room.getCapacity(),
                 room.getDamages()
             );
+            if (isUpdated) {
+                System.out.println("Room updated successfully: Room ID = " + roomId + ", Hotel ID = " + hotelId);
+            } else {
+                System.err.println("No rows updated for Room ID = " + roomId + ", Hotel ID = " + hotelId);
+            }
+            return isUpdated;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;

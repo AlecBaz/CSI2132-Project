@@ -202,8 +202,14 @@ public class RoomService {
             statement.setInt(7, roomId);
             statement.setInt(8, hotelId);
 
+            System.out.println("price: " + price + " view: " + view + " amenities: " + amenities + " extendable: " + extendable + " capacity: " + capacity + " damages: " + damages);
+            System.out.println("roomId: " + roomId + " hotelId: " + hotelId);
+
             int rowsAffected = statement.executeUpdate();
-            return rowsAffected > 0;
+            return rowsAffected > 0; // Return true if rows were updated
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e; // Re-throw the exception for logging in the controller
         }
     }
 }
