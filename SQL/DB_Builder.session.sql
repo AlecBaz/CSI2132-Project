@@ -122,6 +122,10 @@ FROM hotel h
 JOIN room r ON h.hotel_id = r.hotel_id
 GROUP BY h.hotel_id, h.hotel_name;
 
+-- @block
+CREATE INDEX idx_room_filter ON room(hotel_id, price, capacity);
+CREATE INDEX idx_hotel_filter ON hotel(chain_id, city, state, rating, amount_of_rooms);
+CREATE INDEX idx_booking_date ON booking(checkin_date, checkout_date);
 
 -- @block
 DROP TABLE IF EXISTS archive;
