@@ -22,14 +22,14 @@ public class RoomController {
     private final RoomService roomService = new RoomService();
 
     @GetMapping("/search/filter")
-    public List<Room> filterRooms(@RequestParam Date startDate, @RequestParam Date endDate, @RequestParam String chain, @RequestParam int maxPrice, @RequestParam int minPrice, @RequestParam int capacity, @RequestParam String city, @RequestParam String state, @RequestParam int rating) {
+    public List<Room> filterRooms(@RequestParam Date startDate, @RequestParam Date endDate, @RequestParam String chain, @RequestParam int maxPrice, @RequestParam int minPrice, @RequestParam int capacity, @RequestParam String city, @RequestParam String state, @RequestParam int rating, @RequestParam int maxRooms) {
         System.out.println("Entering filterRooms with multiple parameters");
         System.out.println("Searching for rooms with parameters: " +
             "StartDate=" + startDate + ", EndDate=" + endDate + ", Chain=" + chain +
             ", MaxPrice=" + maxPrice + ", MinPrice=" + minPrice +
             ", Capacity=" + capacity + ", City=" + city + ", State=" + state +
-            ", Rating=" + rating);
-        List<Room> rooms = roomService.FilterRooms(startDate, endDate, chain, maxPrice, minPrice, capacity, city, state, rating);
+            ", Rating=" + rating + ", MaxRooms=" + maxRooms);
+        List<Room> rooms = roomService.FilterRooms(startDate, endDate, chain, maxPrice, minPrice, capacity, city, state, rating, maxRooms);
         System.out.println("Found " + rooms.size() + " rooms");
         System.out.println("Exiting filterRooms with multiple parameters");
         return rooms;

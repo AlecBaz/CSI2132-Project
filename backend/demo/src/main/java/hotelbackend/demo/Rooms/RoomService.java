@@ -15,7 +15,7 @@ import hotelbackend.demo.Hotel.HotelService;
 
 public class RoomService {
 
-    public List<Room> FilterRooms(Date StartDate, Date EndDate, String chain, int maxPrice, int minPrice, int capacity, String city, String state, int rating) {
+    public List<Room> FilterRooms(Date StartDate, Date EndDate, String chain, int maxPrice, int minPrice, int capacity, String city, String state, int rating, int maxRooms) {
         String jdbcURL = "jdbc:mysql://34.95.43.176:3306/HotelDB?useSSL=false";
         String dbUser = "root";
         String dbPassword = "AlecSam2025";
@@ -24,7 +24,7 @@ public class RoomService {
         HotelService hotelService = new HotelService();
         BookingService bookingService = new BookingService();
     
-        List<Hotel> hotels = hotelService.FilterHotel(chain, city, state, rating);
+        List<Hotel> hotels = hotelService.FilterHotel(chain, city, state, rating, maxRooms);
     
         if (hotels.isEmpty()) {
             return rooms; // Return empty list if no hotels match the criteria

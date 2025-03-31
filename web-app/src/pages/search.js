@@ -12,9 +12,9 @@ function Search() {
     capacity: '',
     city: '',
     state: '',
-    rating: ''
+    rating: '',
+    maxRoomsPerHotel: '' // Added maxRoomsPerHotel
   });
-  
 
   const [availableRooms, setAvailableRooms] = useState([]);
   const [chainNames, setChainNames] = useState([]);
@@ -38,7 +38,8 @@ function Search() {
         criteria.capacity || 
         criteria.city || 
         criteria.state || 
-        criteria.rating
+        criteria.rating || 
+        criteria.maxRoomsPerHotel // Include maxRoomsPerHotel in the condition
       ) {
         const today = new Date().toISOString().split('T')[0];
         const query = new URLSearchParams({
@@ -50,7 +51,8 @@ function Search() {
           capacity: criteria.capacity || 1,
           city: criteria.city,
           state: criteria.state,
-          rating: criteria.rating || 1
+          rating: criteria.rating || 1,
+          maxRooms: criteria.maxRoomsPerHotel || 0 // Add maxRoomsPerHotel to query
         }).toString();
     
         fetch(`http://localhost:8080/api/rooms/search/filter?${query}`)
@@ -196,6 +198,18 @@ function Search() {
                 max="5"
                 value={criteria.rating}
                 onChange={handleInputChange}
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="maxRoomsPerHotel">Max Rooms Per Hotel:</label> {/* New input field */}
+              <input
+                type="number"
+                id="maxRoomsPerHotel"
+                name="maxRoomsPerHotel"
+                value={criteria.maxRoomsPerHotel}
+                onChange={handleInputChange}
+                placeholder="e.g. 5"
               />
             </div>
           </form>

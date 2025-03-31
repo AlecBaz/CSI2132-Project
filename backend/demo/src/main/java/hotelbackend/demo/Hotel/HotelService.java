@@ -9,48 +9,51 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HotelService {
-    public List<Hotel> FilterHotel(String chain, String city, String state, Integer rating) {
+    public List<Hotel> FilterHotel(String chain, String city, String state, Integer rating, Integer maxRooms) {
         String jdbcURL = "jdbc:mysql://34.95.43.176:3306/HotelDB?useSSL=false";
         String dbUser = "root";
         String dbPassword = "AlecSam2025";
-
+    
         List<Hotel> hotels = new ArrayList<>();
-        StringBuilder query = new StringBuilder("SELECT * FROM hotel h " +
-                                                "JOIN hotel_chain hc ON h.chain_id = hc.chain_id WHERE 1=1");
-
+        StringBuilder query = new StringBuilder("SELECT * FROM hotel WHERE 1=1");
+        List<Object> params = new ArrayList<>();
+    
+        // Handle nested query for chain name
         if (chain != null && !chain.isEmpty()) {
-            query.append(" AND hc.chain_name = ?");
+            query.append(" AND chain_id = (SELECT chain_id FROM hotel_chain WHERE chain_name = ? LIMIT 1)");
+            params.add(chain);
         }
+    
         if (city != null && !city.isEmpty()) {
-            query.append(" AND h.city = ?");
+            query.append(" AND city = ?");
+            params.add(city);
         }
+    
         if (state != null && !state.isEmpty()) {
-            query.append(" AND h.state = ?");
+            query.append(" AND state = ?");
+            params.add(state);
         }
+    
         if (rating != null) {
-            query.append(" AND h.rating >= ?");
+            query.append(" AND rating >= ?");
+            params.add(rating);
         }
-
+    
+        if (maxRooms != null) {
+            query.append(" AND amount_of_rooms <= ?");
+            params.add(maxRooms);
+        }
+    
         try (Connection connection = DriverManager.getConnection(jdbcURL, dbUser, dbPassword);
              PreparedStatement statement = connection.prepareStatement(query.toString())) {
-
-            int paramIndex = 1;
-
-            if (chain != null && !chain.isEmpty()) {
-                statement.setString(paramIndex++, chain);
+    
+            for (int i = 0; i < params.size(); i++) {
+                statement.setObject(i + 1, params.get(i));
             }
-            if (city != null && !city.isEmpty()) {
-                statement.setString(paramIndex++, city);
-            }
-            if (state != null && !state.isEmpty()) {
-                statement.setString(paramIndex++, state);
-            }
-            if (rating != null) {
-                statement.setInt(paramIndex++, rating);
-            }
-
+    
+            System.out.println("Executing query: " + statement);
+    
             ResultSet resultSet = statement.executeQuery();
-
             while (resultSet.next()) {
                 Hotel hotel = new Hotel();
                 hotel.setHotelId(resultSet.getInt("hotel_id"));
@@ -62,15 +65,19 @@ public class HotelService {
                 hotel.setContactEmail(resultSet.getString("contact_email"));
                 hotel.setContactPhone(resultSet.getString("contact_phone"));
                 hotel.setManagerId(resultSet.getInt("manager_id"));
-
+    
                 hotels.add(hotel);
             }
+    
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
+    
+        System.out.println("Found " + hotels.size() + " hotels matching the criteria.");
         return hotels;
     }
+    
+    
 
     public Hotel getHotelInfo(int hotelId) {
         String jdbcURL = "jdbc:mysql://34.95.43.176:3306/HotelDB?useSSL=false";
