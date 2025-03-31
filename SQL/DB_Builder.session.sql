@@ -162,3 +162,38 @@ AFTER INSERT ON renting
 FOR EACH ROW
 INSERT INTO archive (renting_id, start_date, end_date)
 VALUES (NEW.renting_id, NEW.start_date, NEW.end_date);
+
+-- @block
+-- hotel has at least one employee
+ALTER TABLE employee
+ADD CONSTRAINT chk_hotel_employee CHECK (hotel_id IS NOT NULL);
+
+-- hotel has manager
+ALTER TABLE hotel
+ADD CONSTRAINT chk_hotel_manager CHECK (manager_id IS NOT NULL);
+
+-- room belongs to hotel
+ALTER TABLE room
+ADD CONSTRAINT fk_room_hotel FOREIGN KEY (hotel_id) REFERENCES hotel(hotel_id)
+ON DELETE CASCADE;
+
+-- hotel belongs to chain
+ALTER TABLE hotel
+ADD CONSTRAINT fk_hotel_chain FOREIGN KEY (chain_id) REFERENCES hotel_chain(chain_id)
+ON DELETE CASCADE;
+
+-- room's price greater than 0
+ALTER TABLE room
+ADD CONSTRAINT chk_room_price CHECK (price > 0);
+
+-- room's capacity at least 1
+ALTER TABLE room
+ADD CONSTRAINT chk_room_capacity CHECK (capacity >= 1);
+
+-- check-in date is on/after the booking date
+ALTER TABLE booking
+ADD CONSTRAINT chk_checkin_after_booking CHECK (checkin_date >= booking_date);
+
+-- check-out date is at least one day after check-in
+ALTER TABLE booking
+ADD CONSTRAINT chk_checkout_after_checkin CHECK (checkout_date > checkin_date);
