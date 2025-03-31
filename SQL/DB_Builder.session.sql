@@ -54,13 +54,9 @@ CREATE TABLE customer(
     id_type VARCHAR(255),
     customer_address VARCHAR(255),
     customer_name VARCHAR(255),
-    registration_date DATE
+    registration_date DATE,
+    id_number VARCHAR(255)
 )
-
--- @block
-ALTER TABLE customer
-ADD COLUMN id_number VARCHAR(255);
-
 
 -- @block
 CREATE TABLE booking(
@@ -144,4 +140,5 @@ DROP TABLE IF EXISTS hotel;
 DROP TABLE IF EXISTS hotel_chain;
 
 -- @block
-DROP TABLE IF EXISTS employee;
+DROP VIEW IF EXISTS AvailableRoomsPerArea;
+DROP VIEW IF EXISTS HotelRoomCapacity;
