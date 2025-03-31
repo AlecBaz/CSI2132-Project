@@ -31,7 +31,7 @@ CREATE TABLE employee(
     FOREIGN KEY (hotel_id) REFERENCES hotel(hotel_id),
     employee_name VARCHAR(255),
     employee_address VARCHAR(255),
-    SIN INT,
+    SIN_num INT,
     employee_position VARCHAR(255)
 )
 
@@ -142,3 +142,6 @@ DROP TABLE IF EXISTS room;
 DROP TABLE IF EXISTS employee;
 DROP TABLE IF EXISTS hotel;
 DROP TABLE IF EXISTS hotel_chain;
+
+-- @block
+DROP TABLE IF EXISTS employee;

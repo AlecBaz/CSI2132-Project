@@ -34,7 +34,7 @@ public class EmployeeController {
                 id,
                 employee.getEmployeeName(),
                 employee.getEmployeeAddress(),
-                employee.getSIN(),
+                employee.getSIN_num(),
                 employee.getPosition(),
                 employee.getHotelId()
             );
@@ -47,11 +47,13 @@ public class EmployeeController {
     @PostMapping("/add")
     public void addEmployee(@RequestBody Employee employee) {
         try {
+            System.out.println("Debug: Received JSON payload: " + employee); // Debug log
+            System.out.println("Debug: Received SIN_num = " + employee.getSIN_num()); // Debug log
             employeeService.addEmployee(
                 employee.getEmployeeId(),
                 employee.getEmployeeName(),
                 employee.getEmployeeAddress(),
-                employee.getSIN(),
+                employee.getSIN_num(),
                 employee.getPosition(),
                 employee.getHotelId()
             );
