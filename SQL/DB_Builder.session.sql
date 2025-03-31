@@ -125,6 +125,8 @@ GROUP BY h.hotel_id, h.hotel_name;
 
 -- @block
 DROP TABLE IF EXISTS archive;
+DROP TABLE IF EXISTS renting;
+DROP TABLE IF EXISTS booking;
 
 -- @block
 DROP TABLE IF EXISTS save_book;
