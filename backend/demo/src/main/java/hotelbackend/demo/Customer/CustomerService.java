@@ -93,6 +93,9 @@ public class CustomerService {
             statement.setInt(6, customerId);
 
             int rowsAffected = statement.executeUpdate();
+
+            System.out.println("customerName: " + fullName + " customerAddress: " + address + " idType: " + idType + " idNumber: " + idNumber + " registrationDate: " + registrationDate);
+            System.out.println("customerId: " + customerId);
             return rowsAffected > 0;
         }
     }

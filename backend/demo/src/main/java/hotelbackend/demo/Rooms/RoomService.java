@@ -126,6 +126,7 @@ public class RoomService {
 
             statement.setInt(1, roomId);
             int rowsAffected = statement.executeUpdate();
+            System.out.println("Deleted roomId: " + roomId);
             return rowsAffected > 0;
         }
     }
@@ -179,6 +180,9 @@ public class RoomService {
                 insertStmt.setInt(7, capacity);
                 insertStmt.setString(8, damages);
                 insertStmt.executeUpdate();
+
+                System.out.println("price: " + price + " view: " + view + " amenities: " + amenities + " extendable: " + extendable + " capacity: " + capacity + " damages: " + damages);
+                System.out.println("roomId: " + roomId + " hotelId: " + hotelId);
             }
         }
     }

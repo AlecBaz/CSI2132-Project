@@ -117,6 +117,7 @@ public class HotelService {
 
             statement.setInt(1, hotelId);
             int rowsAffected = statement.executeUpdate();
+            System.out.println("Deleted hotelId: " + hotelId);
             return rowsAffected > 0;
         }
     }
@@ -144,6 +145,9 @@ public class HotelService {
             statement.setInt(11, hotelId);
 
             int rowsAffected = statement.executeUpdate();
+
+            System.out.println("rating:"+ rating + " hotelName: " + hotelName + " hotelAddress: " + hotelAddress + " city: " + city + " state: " + state + " amountOfRooms: " + amountOfRooms + " contactEmail: " + contactEmail + " contactPhone: " + contactPhone + " managerId: " + managerId);
+            System.out.println("chainId: " + chainId + " hotelId: " + hotelId);
             return rowsAffected > 0;
         }
     }
@@ -180,6 +184,9 @@ public class HotelService {
                 insertStmt.setString(10, contactPhone);
                 insertStmt.setInt(11, managerId);
                 insertStmt.executeUpdate();
+
+                System.out.println("rating:"+ rating + " hotelName: " + hotelName + " hotelAddress: " + hotelAddress + " city: " + city + " state: " + state + " amountOfRooms: " + amountOfRooms + " contactEmail: " + contactEmail + " contactPhone: " + contactPhone + " managerId: " + managerId);
+                System.out.println("chainId: " + chainId + " hotelId: " + hotelId);
             }
         }
     }

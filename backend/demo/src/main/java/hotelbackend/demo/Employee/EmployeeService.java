@@ -19,6 +19,7 @@ public class EmployeeService {
              PreparedStatement statement = connection.prepareStatement(query)) {
 
             statement.setInt(1, employeeId);
+            System.out.println("Deleted employeeId: " + employeeId);
             int rowsAffected = statement.executeUpdate();
             return rowsAffected > 0;
         }
@@ -42,6 +43,9 @@ public class EmployeeService {
             statement.setInt(6, hotelId);
 
             int rowsAffected = statement.executeUpdate();
+
+            System.out.println("employeeName: " + employeeName + " employeeAddress: " + employeeAddress + " SIN: " + SIN + " position: " + position + " hotelId: " + hotelId);
+            System.out.println("employeeId: " + employeeId);
             return rowsAffected > 0;
         }
     }
@@ -73,6 +77,9 @@ public class EmployeeService {
                 insertStmt.setString(5, position);
                 insertStmt.setInt(6, hotelId);
                 insertStmt.executeUpdate();
+
+                System.out.println("employeeName: " + employeeName + " employeeAddress: " + employeeAddress + " SIN: " + SIN + " position: " + position + " hotelId: " + hotelId);
+                System.out.println("employeeId: " + employeeId);
             }
         }
     }
