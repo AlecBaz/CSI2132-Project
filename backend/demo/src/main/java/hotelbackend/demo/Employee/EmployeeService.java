@@ -25,38 +25,38 @@ public class EmployeeService {
         }
     }
 
-    public boolean updateEmployee(int employeeId, String employeeName, String employeeAddress, int SIN, String position, int hotelId) throws SQLException {
+    public boolean updateEmployee(int employeeId, String employeeName, String employeeAddress, int SIN_num, String position, int hotelId) throws SQLException {
         String jdbcURL = "jdbc:mysql://34.95.43.176:3306/HotelDB?useSSL=false";
         String dbUser = "root";
         String dbPassword = "AlecSam2025";
 
-        String query = "UPDATE employee SET employee_name = ?, employee_address = ?, SIN = ?, employee_position = ?, hotel_id = ? WHERE employee_id = ?";
+        String query = "UPDATE employee SET employee_name = ?, employee_address = ?, SIN_num = ?, employee_position = ?, hotel_id = ? WHERE employee_id = ?";
 
         try (Connection connection = DriverManager.getConnection(jdbcURL, dbUser, dbPassword);
              PreparedStatement statement = connection.prepareStatement(query)) {
 
             statement.setString(1, employeeName);
             statement.setString(2, employeeAddress);
-            statement.setInt(3, SIN); // Ensure SIN is passed as an integer
+            statement.setInt(3, SIN_num); // Use SIN_num to match database
             statement.setString(4, position);
-            statement.setInt(5, employeeId);
-            statement.setInt(6, hotelId);
+            statement.setInt(5, hotelId);
+            statement.setInt(6, employeeId);
 
             int rowsAffected = statement.executeUpdate();
 
-            System.out.println("employeeName: " + employeeName + " employeeAddress: " + employeeAddress + " SIN: " + SIN + " position: " + position + " hotelId: " + hotelId);
+            System.out.println("employeeName: " + employeeName + " employeeAddress: " + employeeAddress + " SIN_num: " + SIN_num + " position: " + position + " hotelId: " + hotelId);
             System.out.println("employeeId: " + employeeId);
             return rowsAffected > 0;
         }
     }
 
-    public void addEmployee(int employeeId, String employeeName, String employeeAddress, int SIN, String position, int hotelId) throws SQLException {
+    public void addEmployee(int employeeId, String employeeName, String employeeAddress, int SIN_num, String position, int hotelId) throws SQLException {
         String jdbcURL = "jdbc:mysql://34.95.43.176:3306/HotelDB?useSSL=false";
         String dbUser = "root";
         String dbPassword = "AlecSam2025";
 
         String checkQuery = "SELECT COUNT(*) FROM employee WHERE employee_id = ?";
-        String insertQuery = "INSERT INTO employee (employee_id, employee_name, employee_address, SIN, employee_position, hotel_id) VALUES (?, ?, ?, ?, ?, ?)";
+        String insertQuery = "INSERT INTO employee (employee_id, employee_name, employee_address, SIN_num, employee_position, hotel_id) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection connection = DriverManager.getConnection(jdbcURL, dbUser, dbPassword)) {
             // Check if the employee already exists
@@ -73,12 +73,14 @@ public class EmployeeService {
                 insertStmt.setInt(1, employeeId);
                 insertStmt.setString(2, employeeName);
                 insertStmt.setString(3, employeeAddress);
-                insertStmt.setInt(4, SIN);
+                insertStmt.setInt(4, SIN_num); // Ensure SIN_num is set correctly
                 insertStmt.setString(5, position);
                 insertStmt.setInt(6, hotelId);
+
+                System.out.println("Debug: Adding employee with SIN_num = " + SIN_num); // Debug log
                 insertStmt.executeUpdate();
 
-                System.out.println("employeeName: " + employeeName + " employeeAddress: " + employeeAddress + " SIN: " + SIN + " position: " + position + " hotelId: " + hotelId);
+                System.out.println("employeeName: " + employeeName + " employeeAddress: " + employeeAddress + " SIN_num: " + SIN_num + " position: " + position + " hotelId: " + hotelId);
                 System.out.println("employeeId: " + employeeId);
             }
         }

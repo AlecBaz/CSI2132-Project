@@ -1,10 +1,15 @@
 package hotelbackend.demo.Employee;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Employee {
     private int employeeId;
     private String employeeName;
     private String employeeAddress;
-    private int SIN;
+
+    @JsonProperty("SIN_num") // Map JSON field "SIN_num" to this property
+    private int SIN_num; // Use SIN_num to match database
+
     private int hotelId;
     private String position;
 
@@ -33,12 +38,12 @@ public class Employee {
         this.employeeAddress = employeeAddress;
     }
 
-    public int getSIN() {
-        return SIN;
+    public int getSIN_num() { // Use SIN_num in getter
+        return SIN_num;
     }
 
-    public void setSIN(int SIN) {
-        this.SIN = SIN;
+    public void setSIN_num(int SIN_num) { // Use SIN_num in setter
+        this.SIN_num = SIN_num;
     }
 
     public String getPosition() {

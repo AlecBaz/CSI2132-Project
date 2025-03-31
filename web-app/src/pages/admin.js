@@ -47,19 +47,22 @@ function AdminPanel() {
     }
     if (section === 'employees') {
       try {
+        const payload = {
+          employeeId: parseInt(entries[section].employee_id, 10),
+          employeeName: entries[section].employee_name,
+          employeeAddress: entries[section].employee_address,
+          SIN_num: parseInt(entries[section].SIN_num, 10), // Ensure SIN_num is parsed as an integer
+          position: entries[section].employee_position,
+          hotelId: parseInt(entries[section].hotel_id, 10),
+        };
+        console.log("Debug: Payload being sent to backend:", payload); // Debug log
+
         const response = await fetch('http://localhost:8080/api/employee/add', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({
-            employeeId: parseInt(entries[section].employee_id, 10), // Include employee_id
-            employeeName: entries[section].employee_name,
-            employeeAddress: entries[section].employee_address,
-            SIN: parseInt(entries[section].SIN, 10), // Ensure SIN is passed as an integer
-            position: entries[section].employee_position,
-            hotelId: parseInt(entries[section].hotel_id, 10), // Include hotel_id
-          }),
+          body: JSON.stringify(payload),
         });
         if (response.ok) {
           console.log('Employee added successfully.');
@@ -289,8 +292,9 @@ function AdminPanel() {
           body: JSON.stringify({
             employeeName: entries[section].employee_name,
             employeeAddress: entries[section].employee_address,
-            SIN: entries[section].SIN,
+            SIN_num: parseInt(entries[section].SIN_num, 10), // Ensure SIN_num is parsed as an integer
             position: entries[section].employee_position,
+            hotelId: parseInt(entries[section].hotel_id, 10),
           }),
         });
         if (response.ok) {
@@ -333,10 +337,9 @@ function AdminPanel() {
               )}
               {section === 'employees' && (
                 <>
-                  <input type="number" placeholder="Employee ID" onChange={(e) => handleChange(e, section, 'employee_id')} />
                   <input type="text" placeholder="Employee Name" onChange={(e) => handleChange(e, section, 'employee_name')} />
                   <input type="text" placeholder="Employee Address" onChange={(e) => handleChange(e, section, 'employee_address')} />
-                  <input type="number" placeholder="SIN" onChange={(e) => handleChange(e, section, 'SIN')} />
+                  <input type="number" placeholder="SIN" onChange={(e) => handleChange(e, section, 'SIN_num')} />
                   <input type="text" placeholder="Position" onChange={(e) => handleChange(e, section, 'employee_position')} />
                   <input type="number" placeholder="Hotel ID" onChange={(e) => handleChange(e, section, 'hotel_id')} />
                 </>
@@ -387,7 +390,7 @@ function AdminPanel() {
                   <input type="text" placeholder={`Enter ${section} ID to edit`} value={editEntries.id} onChange={(e) => handleEditChange(e, 'id')} />
                   <input type="text" placeholder="Employee Name" onChange={(e) => handleChange(e, section, 'employee_name')} />
                   <input type="text" placeholder="Employee Address" onChange={(e) => handleChange(e, section, 'employee_address')} />
-                  <input type="number" placeholder="SIN" onChange={(e) => handleChange(e, section, 'SIN')} />
+                  <input type="number" placeholder="SIN" onChange={(e) => handleChange(e, section, 'SIN_num')} />
                   <input type="text" placeholder="Position" onChange={(e) => handleChange(e, section, 'employee_position')} />
                   <input type="number" placeholder="Hotel ID" onChange={(e) => handleChange(e, section, 'hotel_id')} />
                 </>
