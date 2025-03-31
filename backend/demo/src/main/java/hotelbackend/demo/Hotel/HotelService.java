@@ -18,7 +18,6 @@ public class HotelService {
         StringBuilder query = new StringBuilder("SELECT * FROM hotel WHERE 1=1");
         List<Object> params = new ArrayList<>();
     
-        // Handle nested query for chain name
         if (chain != null && !chain.isEmpty()) {
             query.append(" AND chain_id = (SELECT chain_id FROM hotel_chain WHERE chain_name = ? LIMIT 1)");
             params.add(chain);

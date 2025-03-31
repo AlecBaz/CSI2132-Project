@@ -18,10 +18,8 @@ public class RentingService {
         }
 
         String insertRentingQuery = "INSERT INTO renting (room_id, customer_id, start_date, end_date, payment_status) VALUES (?, ?, ?, ?, ?)";
-        String insertArchiveQuery = "INSERT INTO archive (renting_id, start_date, end_date) VALUES (?, ?, ?)";
 
         try (Connection connection = DriverManager.getConnection(jdbcURL, dbUser, dbPassword)) {
-            // Insert into renting table
             try (PreparedStatement rentingStatement = connection.prepareStatement(insertRentingQuery, Statement.RETURN_GENERATED_KEYS)) {
                 rentingStatement.setInt(1, roomId);
                 rentingStatement.setInt(2, customerId);
@@ -30,22 +28,6 @@ public class RentingService {
                 rentingStatement.setString(5, "pending");
 
                 rentingStatement.executeUpdate();
-
-                // Get the generated renting_id
-                try (ResultSet generatedKeys = rentingStatement.getGeneratedKeys()) {
-                    if (generatedKeys.next()) {
-                        int rentingId = generatedKeys.getInt(1);
-
-                        // Insert into archive table
-                        try (PreparedStatement archiveStatement = connection.prepareStatement(insertArchiveQuery)) {
-                            archiveStatement.setInt(1, rentingId);
-                            archiveStatement.setDate(2, startDate);
-                            archiveStatement.setDate(3, endDate);
-
-                            archiveStatement.executeUpdate();
-                        }
-                    }
-                }
             }
         }
     }
@@ -59,7 +41,6 @@ public class RentingService {
         String updateBookingStatusQuery = "UPDATE booking SET status = 'converted' WHERE booking_id = ?";
 
         try (Connection connection = DriverManager.getConnection(jdbcURL, dbUser, dbPassword)) {
-            // Retrieve booking details
             try (PreparedStatement selectBookingStatement = connection.prepareStatement(selectBookingQuery)) {
                 selectBookingStatement.setInt(1, bookingId);
 
@@ -70,10 +51,8 @@ public class RentingService {
                         Date checkinDate = resultSet.getDate("checkin_date");
                         Date checkoutDate = resultSet.getDate("checkout_date");
 
-                        // Convert booking to renting
                         rentRoom(customerId, roomId, checkinDate, checkoutDate, false);
 
-                        // Update booking status
                         try (PreparedStatement updateBookingStatusStatement = connection.prepareStatement(updateBookingStatusQuery)) {
                             updateBookingStatusStatement.setInt(1, bookingId);
                             updateBookingStatusStatement.executeUpdate();

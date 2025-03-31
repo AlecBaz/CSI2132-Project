@@ -37,7 +37,7 @@ public class EmployeeService {
 
             statement.setString(1, employeeName);
             statement.setString(2, employeeAddress);
-            statement.setInt(3, SIN_num); // Use SIN_num to match database
+            statement.setInt(3, SIN_num); 
             statement.setString(4, position);
             statement.setInt(5, hotelId);
             statement.setInt(6, employeeId);
@@ -59,7 +59,6 @@ public class EmployeeService {
         String insertQuery = "INSERT INTO employee (employee_id, employee_name, employee_address, SIN_num, employee_position, hotel_id) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection connection = DriverManager.getConnection(jdbcURL, dbUser, dbPassword)) {
-            // Check if the employee already exists
             try (PreparedStatement checkStmt = connection.prepareStatement(checkQuery)) {
                 checkStmt.setInt(1, employeeId);
                 ResultSet resultSet = checkStmt.executeQuery();
@@ -68,16 +67,15 @@ public class EmployeeService {
                 }
             }
 
-            // Insert the new employee
             try (PreparedStatement insertStmt = connection.prepareStatement(insertQuery)) {
                 insertStmt.setInt(1, employeeId);
                 insertStmt.setString(2, employeeName);
                 insertStmt.setString(3, employeeAddress);
-                insertStmt.setInt(4, SIN_num); // Ensure SIN_num is set correctly
+                insertStmt.setInt(4, SIN_num); 
                 insertStmt.setString(5, position);
                 insertStmt.setInt(6, hotelId);
 
-                System.out.println("Debug: Adding employee with SIN_num = " + SIN_num); // Debug log
+                System.out.println("Debug: Adding employee with SIN_num = " + SIN_num);
                 insertStmt.executeUpdate();
 
                 System.out.println("employeeName: " + employeeName + " employeeAddress: " + employeeAddress + " SIN_num: " + SIN_num + " position: " + position + " hotelId: " + hotelId);

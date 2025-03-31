@@ -17,13 +17,11 @@ function Booking() {
   });
 
   useEffect(() => {
-    // Fetch room info
     fetch(`http://localhost:8080/api/rooms/search/roominfo/${roomID}`)
       .then(res => res.json())
       .then(data => setRoomInfo(data))
       .catch(err => console.error('Error fetching room info:', err));
   
-    // Fetch availability
     fetch(`http://localhost:8080/api/booking/availability/${roomID}`)
       .then(res => res.json())
       .then(data => setAvailability(data))
@@ -86,7 +84,7 @@ function Booking() {
       }
   
       console.log('Customer added successfully');
-      return newCustomer.idNumber; // Use this as the customer ID
+      return newCustomer.idNumber; 
     } catch (error) {
       console.error('Error adding customer:', error);
       return null;

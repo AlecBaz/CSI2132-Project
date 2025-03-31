@@ -1,7 +1,7 @@
 package hotelbackend.demo.Rooms;
 
 
-import hotelbackend.demo.Hotel.Hotel; // Import the Hotel class
+import hotelbackend.demo.Hotel.Hotel;
 import hotelbackend.demo.Hotel.HotelService;
 
 public class Room {
@@ -17,9 +17,8 @@ public class Room {
     private String hotelName;
     private String hotelAddress;
 
-    private Hotel hotel; // Add Hotel object
+    private Hotel hotel;
 
-    // Getters and Setters
     public int getRoomId() {
         return roomId;
     }

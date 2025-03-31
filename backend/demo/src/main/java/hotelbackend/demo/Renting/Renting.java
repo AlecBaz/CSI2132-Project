@@ -5,12 +5,11 @@ import java.util.Date;
 public class Renting {
     private int rentingId;
     private int customerId;
-    private int roomId; // Added roomId
+    private int roomId; 
     private Date startDate;
     private Date endDate;
     private String paymentStatus;
 
-    // Getters and Setters
     public int getRentingId() {
         return rentingId;
     }
@@ -27,11 +26,11 @@ public class Renting {
         this.customerId = customerId;
     }
 
-    public int getRoomId() { // Getter for roomId
+    public int getRoomId() {
         return roomId;
     }
 
-    public void setRoomId(int roomId) { // Setter for roomId
+    public void setRoomId(int roomId) {
         this.roomId = roomId;
     }
 

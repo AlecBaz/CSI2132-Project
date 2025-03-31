@@ -6,7 +6,6 @@ public class AvailableRoomsPerArea {
     private String state;
     private int availableRooms;
 
-    // Getters & Setters
     public String getCity() { return city; }
     public void setCity(String city) { this.city = city; }
 

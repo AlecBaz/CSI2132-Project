@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-@CrossOrigin(origins = "http://localhost:3000") // Allow React dev server
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/renting")
 public class RentingController {

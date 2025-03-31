@@ -38,7 +38,6 @@ public class ChainService {
         return chain;
     }
 
-    // ✅ NEW METHOD: Get all chain names
     public List<String> getAllChainNames() {
         List<String> chainNames = new ArrayList<>();
         String jdbcURL = "jdbc:mysql://34.95.43.176:3306/HotelDB?useSSL=false";

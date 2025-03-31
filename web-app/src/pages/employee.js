@@ -7,7 +7,6 @@ function Employee() {
   const [rentalInfo, setRentalInfo] = useState({ roomId: '', customerId: '', startDate: '', endDate: '' });
   const [paymentInfo, setPaymentInfo] = useState({ rentalId: '', amount: '' });
 
-  // Convert Booking to Renting
   const handleConfirmBooking = async () => {
     try {
       const response = await fetch('http://localhost:8080/api/renting/convert', {
@@ -15,7 +14,6 @@ function Employee() {
         headers: {
           'Content-Type': 'application/json',
         },
-        // Sending the bookingId as a number in the request body
         body: JSON.stringify(parseInt(bookingId, 10))
       });
       if (!response.ok) {
@@ -27,7 +25,6 @@ function Employee() {
     }
   };
 
-  // Direct Renting (changed to POST for sending JSON)
   const handleDirectRenting = async () => {
     try {
       const rentingData = {
@@ -37,7 +34,7 @@ function Employee() {
         endDate: rentalInfo.endDate
       };
       const response = await fetch('http://localhost:8080/api/renting/direct', {
-        method: 'POST', // Use POST so we can include a JSON body
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -52,7 +49,6 @@ function Employee() {
     }
   };
 
-  // Insert Customer Payment using GET with query parameters
   const handlePayment = async () => {
     try {
       const url = `http://localhost:8080/api/renting/processpayment?rentingId=${encodeURIComponent(paymentInfo.rentalId)}&amount=${encodeURIComponent(paymentInfo.amount)}`;

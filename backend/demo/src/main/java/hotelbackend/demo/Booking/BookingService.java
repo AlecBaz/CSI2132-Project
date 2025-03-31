@@ -115,22 +115,6 @@ public class BookingService {
 
                 bookingStatement.executeUpdate();
 
-                ResultSet generatedKeys = bookingStatement.getGeneratedKeys();
-                if (generatedKeys.next()) {
-                    int bookingId = generatedKeys.getInt(1);
-
-                    String archiveQuery = "INSERT INTO archive (booking_id, renting_id, checkin_date, checkout_date, booking_date, start_date, end_date) " +
-                                          "VALUES (?, NULL, ?, ?, CURDATE(), NULL, NULL)";
-
-                    try (PreparedStatement archiveStatement = connection.prepareStatement(archiveQuery)) {
-                        archiveStatement.setInt(1, bookingId);
-                        archiveStatement.setDate(2, startDate);
-                        archiveStatement.setDate(3, endDate);
-
-                        archiveStatement.executeUpdate();
-                    }
-                }
-
             } catch (SQLException e) {
                 e.printStackTrace();
                 throw new RuntimeException("Failed to book the room.");
@@ -150,8 +134,6 @@ public class BookingService {
         String dbUser = "root";
         String dbPassword = "AlecSam2025";
 
-      
-
         if (!isAvailable(roomid, startDate, endDate)) {
             throw new IllegalArgumentException("Room is not available for the selected dates.");
         }
@@ -169,26 +151,9 @@ public class BookingService {
 
             bookingStatement.executeUpdate();
 
-            ResultSet generatedKeys = bookingStatement.getGeneratedKeys();
-            if (generatedKeys.next()) {
-                int bookingId = generatedKeys.getInt(1);
-
-                String archiveQuery = "INSERT INTO archive (booking_id, renting_id, checkin_date, checkout_date, booking_date, start_date, end_date) " +
-                                        "VALUES (?, NULL, ?, ?, CURDATE(), NULL, NULL)";
-
-                try (PreparedStatement archiveStatement = connection.prepareStatement(archiveQuery)) {
-                    archiveStatement.setInt(1, bookingId);
-                    archiveStatement.setDate(2, startDate);
-                    archiveStatement.setDate(3, endDate);
-
-                    archiveStatement.executeUpdate();
-                }
-            }
-
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException("Failed to book the room.");
         }
-
     }
 }

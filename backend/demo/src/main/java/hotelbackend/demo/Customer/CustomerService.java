@@ -17,7 +17,6 @@ public class CustomerService {
         String insertQuery = "INSERT INTO customer (id_type, customer_address, customer_name, id_number, registration_date) VALUES (?, ?, ?, ?, ?)";
 
         try (Connection connection = DriverManager.getConnection(jdbcURL, dbUser, dbPassword)) {
-            // Check if the customer already exists
             try (PreparedStatement checkStmt = connection.prepareStatement(checkQuery)) {
                 checkStmt.setString(1, idType);
                 checkStmt.setString(2, idNumber);
@@ -27,7 +26,6 @@ public class CustomerService {
                 }
             }
 
-            // Insert the new customer
             try (PreparedStatement insertStmt = connection.prepareStatement(insertQuery)) {
                 insertStmt.setString(1, idType);
                 insertStmt.setString(2, address);

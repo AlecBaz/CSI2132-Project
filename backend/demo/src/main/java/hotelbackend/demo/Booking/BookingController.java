@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = "http://localhost:3000") // Allow React dev server
+@CrossOrigin(origins = "http://localhost:3000") 
 @RestController
 @RequestMapping("/api/booking")
 public class BookingController {
@@ -42,7 +42,7 @@ public class BookingController {
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                                 .body(List.of()); // Return an empty list as a fallback
+                                 .body(List.of()); 
         }
     }
 }

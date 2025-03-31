@@ -13,14 +13,13 @@ function Search() {
     city: '',
     state: '',
     rating: '',
-    maxRoomsPerHotel: '' // Added maxRoomsPerHotel
+    maxRoomsPerHotel: '' 
   });
 
   const [availableRooms, setAvailableRooms] = useState([]);
   const [chainNames, setChainNames] = useState([]);
-  const navigate = useNavigate(); // ✅ Initialize navigate function
+  const navigate = useNavigate(); 
 
-  // ✅ 2nd useEffect for fetching chain names
   useEffect(() => {
     fetch('http://localhost:8080/api/chains/names')
       .then(res => res.json())
@@ -39,7 +38,7 @@ function Search() {
         criteria.city || 
         criteria.state || 
         criteria.rating || 
-        criteria.maxRoomsPerHotel // Include maxRoomsPerHotel in the condition
+        criteria.maxRoomsPerHotel 
       ) {
         const today = new Date().toISOString().split('T')[0];
         const query = new URLSearchParams({
@@ -52,7 +51,7 @@ function Search() {
           city: criteria.city,
           state: criteria.state,
           rating: criteria.rating || 1,
-          maxRooms: criteria.maxRoomsPerHotel || 1000 // Add maxRoomsPerHotel to query
+          maxRooms: criteria.maxRoomsPerHotel || 1000 
         }).toString();
     
         fetch(`http://localhost:8080/api/rooms/search/filter?${query}`)
@@ -60,13 +59,13 @@ function Search() {
           .then(data => setAvailableRooms(data))
           .catch(err => console.error("Error fetching filtered rooms:", err));
       }
-    }, 1000); // ⏱ 500ms debounce delay
+    }, 1000); 
   
-    return () => clearTimeout(debounceTimeout); // ❌ Clear timeout if user types again
+    return () => clearTimeout(debounceTimeout); 
   }, [criteria]);
   
   const handleBookRoom = (roomId) => {
-    navigate(`/booking/${roomId}`); // Redirect to booking page with roomID
+    navigate(`/booking/${roomId}`);
   };
     
   const handleInputChange = (e) => {

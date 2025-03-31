@@ -27,7 +27,7 @@ public class RoomService {
         List<Hotel> hotels = hotelService.FilterHotel(chain, city, state, rating, maxRooms);
     
         if (hotels.isEmpty()) {
-            return rooms; // Return empty list if no hotels match the criteria
+            return rooms; 
         }
     
         String query = "SELECT r.room_id, r.hotel_id, r.price, r.view, r.amentities, r.extendable, r.capacity, r.damages " +
@@ -58,7 +58,6 @@ public class RoomService {
                     room.setHotelName(hotel.getHotelName());
                     room.setHotelAddress(hotel.getHotelAddress());
     
-                    // ✅ Use isAvailable method instead of manual check
                     boolean isAvailable = bookingService.isAvailable(room.getRoomId(), StartDate, EndDate);
     
                     if (isAvailable) {
@@ -111,7 +110,7 @@ public class RoomService {
             e.printStackTrace();
         }
 
-        return null; // Return null if no room is found or an error occurs
+        return null;
     }
 
     public boolean deleteRoom(int roomId) throws SQLException {
@@ -160,7 +159,6 @@ public class RoomService {
         String insertQuery = "INSERT INTO room (room_id, hotel_id, price, view, amentities, extendable, capacity, damages) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection connection = DriverManager.getConnection(jdbcURL, dbUser, dbPassword)) {
-            // Check if the room already exists
             try (PreparedStatement checkStmt = connection.prepareStatement(checkQuery)) {
                 checkStmt.setInt(1, roomId);
                 ResultSet resultSet = checkStmt.executeQuery();
@@ -169,7 +167,6 @@ public class RoomService {
                 }
             }
 
-            // Insert the new room
             try (PreparedStatement insertStmt = connection.prepareStatement(insertQuery)) {
                 insertStmt.setInt(1, roomId);
                 insertStmt.setInt(2, hotelId);
@@ -210,10 +207,10 @@ public class RoomService {
             System.out.println("roomId: " + roomId + " hotelId: " + hotelId);
 
             int rowsAffected = statement.executeUpdate();
-            return rowsAffected > 0; // Return true if rows were updated
+            return rowsAffected > 0;
         } catch (SQLException e) {
             e.printStackTrace();
-            throw e; // Re-throw the exception for logging in the controller
+            throw e; 
         }
     }
 }

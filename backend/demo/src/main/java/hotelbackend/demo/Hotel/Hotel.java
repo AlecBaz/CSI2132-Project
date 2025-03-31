@@ -14,7 +14,6 @@ public class Hotel {
     private String contactPhone;
     private int managerId;
 
-    // Getters and Setters
     public int getHotelId() {
         return hotelId;
     }

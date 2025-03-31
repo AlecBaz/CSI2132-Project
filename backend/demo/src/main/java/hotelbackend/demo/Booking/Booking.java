@@ -6,7 +6,7 @@ public class Booking {
 
     private int bookingId;
     private int customerId;
-    private int roomId; // Added roomId
+    private int roomId; 
     private Date bookingDate;
     private Date checkinDate;
     private Date checkoutDate;
@@ -28,11 +28,11 @@ public class Booking {
         this.customerId = customerId;
     }
 
-    public int getRoomId() { // Getter for roomId
+    public int getRoomId() { 
         return roomId;
     }
 
-    public void setRoomId(int roomId) { // Setter for roomId
+    public void setRoomId(int roomId) {
         this.roomId = roomId;
     }
 

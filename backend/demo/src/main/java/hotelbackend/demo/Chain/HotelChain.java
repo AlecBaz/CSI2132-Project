@@ -8,7 +8,6 @@ public class HotelChain {
     private String emailAddresses;
     private String phoneNumbers;
 
-    // Getters and Setters
     public int getChainId() {
         return chainId;
     }

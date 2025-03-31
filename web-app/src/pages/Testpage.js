@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 function ChainComponent() {
-  const { chainId } = useParams(); // ✅ grabs chainId from the URL
+  const { chainId } = useParams();
   const [chain, setChain] = useState(null);
 
   useEffect(() => {

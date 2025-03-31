@@ -7,13 +7,12 @@ public class Employee {
     private String employeeName;
     private String employeeAddress;
 
-    @JsonProperty("SIN_num") // Map JSON field "SIN_num" to this property
-    private int SIN_num; // Use SIN_num to match database
+    @JsonProperty("SIN_num")
+    private int SIN_num; 
 
     private int hotelId;
     private String position;
 
-    // Getters and Setters
     public int getEmployeeId() {
         return employeeId;
     }
@@ -38,11 +37,11 @@ public class Employee {
         this.employeeAddress = employeeAddress;
     }
 
-    public int getSIN_num() { // Use SIN_num in getter
+    public int getSIN_num() { 
         return SIN_num;
     }
 
-    public void setSIN_num(int SIN_num) { // Use SIN_num in setter
+    public void setSIN_num(int SIN_num) { 
         this.SIN_num = SIN_num;
     }
 

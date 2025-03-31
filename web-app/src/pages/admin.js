@@ -37,7 +37,7 @@ function AdminPanel() {
         });
         if (response.ok) {
           console.log('Customer added successfully.');
-          setEntries({ ...entries, [section]: {} }); // Clear input fields
+          setEntries({ ...entries, [section]: {} }); 
         } else {
           console.error('Failed to add customer.');
         }
@@ -51,11 +51,11 @@ function AdminPanel() {
           employeeId: parseInt(entries[section].employee_id, 10),
           employeeName: entries[section].employee_name,
           employeeAddress: entries[section].employee_address,
-          SIN_num: parseInt(entries[section].SIN_num, 10), // Ensure SIN_num is parsed as an integer
+          SIN_num: parseInt(entries[section].SIN_num, 10), 
           position: entries[section].employee_position,
           hotelId: parseInt(entries[section].hotel_id, 10),
         };
-        console.log("Debug: Payload being sent to backend:", payload); // Debug log
+        console.log("Debug: Payload being sent to backend:", payload); 
 
         const response = await fetch('http://localhost:8080/api/employee/add', {
           method: 'POST',
@@ -66,7 +66,7 @@ function AdminPanel() {
         });
         if (response.ok) {
           console.log('Employee added successfully.');
-          setEntries({ ...entries, [section]: {} }); // Clear input fields
+          setEntries({ ...entries, [section]: {} }); 
         } else {
           console.error('Failed to add employee.');
         }
@@ -97,7 +97,7 @@ function AdminPanel() {
         });
         if (response.ok) {
           console.log('Hotel added successfully.');
-          setEntries({ ...entries, [section]: {} }); // Clear input fields
+          setEntries({ ...entries, [section]: {} }); 
         } else {
           console.error('Failed to add hotel.');
         }
@@ -125,7 +125,7 @@ function AdminPanel() {
         });
         if (response.ok) {
           console.log('Room added successfully.');
-          setEntries({ ...entries, [section]: {} }); // Clear input fields
+          setEntries({ ...entries, [section]: {} });
         } else {
           console.error('Failed to add room.');
         }
@@ -144,7 +144,7 @@ function AdminPanel() {
         });
         if (response.ok) {
           console.log(`Customer with ID ${deleteEntry[section]} deleted successfully.`);
-          setDeleteEntry({ ...deleteEntry, [section]: '' }); // Clear input
+          setDeleteEntry({ ...deleteEntry, [section]: '' }); 
         } else {
           console.error(`Failed to delete customer with ID ${deleteEntry[section]}`);
         }
@@ -159,7 +159,7 @@ function AdminPanel() {
         });
         if (response.ok) {
           console.log(`Room with ID ${deleteEntry[section]} deleted successfully.`);
-          setDeleteEntry({ ...deleteEntry, [section]: '' }); // Clear input
+          setDeleteEntry({ ...deleteEntry, [section]: '' }); 
         } else {
           console.error(`Failed to delete room with ID ${deleteEntry[section]}`);
         }
@@ -174,7 +174,7 @@ function AdminPanel() {
         });
         if (response.ok) {
           console.log(`Hotel with ID ${deleteEntry[section]} deleted successfully.`);
-          setDeleteEntry({ ...deleteEntry, [section]: '' }); // Clear input
+          setDeleteEntry({ ...deleteEntry, [section]: '' });
         } else {
           console.error(`Failed to delete hotel with ID ${deleteEntry[section]}`);
         }
@@ -189,7 +189,7 @@ function AdminPanel() {
         });
         if (response.ok) {
           console.log(`Employee with ID ${deleteEntry[section]} deleted successfully.`);
-          setDeleteEntry({ ...deleteEntry, [section]: '' }); // Clear input
+          setDeleteEntry({ ...deleteEntry, [section]: '' }); 
         } else {
           console.error(`Failed to delete employee with ID ${deleteEntry[section]}`);
         }
@@ -218,7 +218,7 @@ function AdminPanel() {
         });
         if (response.ok) {
           console.log(`Customer with ID ${editEntries.id} updated successfully.`);
-          setEditEntries({ id: '', newEntry: '' }); // Clear input
+          setEditEntries({ id: '', newEntry: '' }); 
         } else {
           console.error(`Failed to update customer with ID ${editEntries.id}`);
         }
@@ -244,7 +244,7 @@ function AdminPanel() {
         });
         if (response.ok) {
           console.log(`Room with ID ${editEntries.id} and Hotel ID ${entries[section].hotel_id} updated successfully.`);
-          setEditEntries({ id: '', newEntry: '' }); // Clear input
+          setEditEntries({ id: '', newEntry: '' }); 
         } else {
           console.error(`Failed to update room with ID ${editEntries.id} and Hotel ID ${entries[section].hotel_id}`);
         }
@@ -274,7 +274,7 @@ function AdminPanel() {
         });
         if (response.ok) {
           console.log(`Hotel with ID ${editEntries.id} updated successfully.`);
-          setEditEntries({ id: '', newEntry: '' }); // Clear input
+          setEditEntries({ id: '', newEntry: '' });
         } else {
           console.error(`Failed to update hotel with ID ${editEntries.id}`);
         }
@@ -292,14 +292,14 @@ function AdminPanel() {
           body: JSON.stringify({
             employeeName: entries[section].employee_name,
             employeeAddress: entries[section].employee_address,
-            SIN_num: parseInt(entries[section].SIN_num, 10), // Ensure SIN_num is parsed as an integer
+            SIN_num: parseInt(entries[section].SIN_num, 10),
             position: entries[section].employee_position,
             hotelId: parseInt(entries[section].hotel_id, 10),
           }),
         });
         if (response.ok) {
           console.log(`Employee with ID ${editEntries.id} updated successfully.`);
-          setEditEntries({ id: '', newEntry: '' }); // Clear input
+          setEditEntries({ id: '', newEntry: '' });
         } else {
           console.error(`Failed to update employee with ID ${editEntries.id}`);
         }
