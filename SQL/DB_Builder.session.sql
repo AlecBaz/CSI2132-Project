@@ -144,4 +144,5 @@ DROP TABLE IF EXISTS hotel;
 DROP TABLE IF EXISTS hotel_chain;
 
 -- @block
-DROP TABLE IF EXISTS employee;
+DROP VIEW IF EXISTS AvailableRoomsPerArea;
+DROP VIEW IF EXISTS HotelRoomCapacity;
