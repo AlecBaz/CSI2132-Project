@@ -148,3 +148,17 @@ DROP TABLE IF EXISTS hotel_chain;
 -- @block
 DROP VIEW IF EXISTS AvailableRoomsPerArea;
 DROP VIEW IF EXISTS HotelRoomCapacity;
+
+-- @block
+CREATE TRIGGER after_booking_insert
+AFTER INSERT ON booking
+FOR EACH ROW
+INSERT INTO archive (booking_id, checkin_date, checkout_date, booking_date)
+VALUES (NEW.booking_id, NEW.checkin_date, NEW.checkout_date, NEW.booking_date);
+
+-- @block
+CREATE TRIGGER after_renting_insert
+AFTER INSERT ON renting
+FOR EACH ROW
+INSERT INTO archive (renting_id, start_date, end_date)
+VALUES (NEW.renting_id, NEW.start_date, NEW.end_date);
