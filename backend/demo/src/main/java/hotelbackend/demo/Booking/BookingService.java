@@ -140,4 +140,55 @@ public class BookingService {
             throw new RuntimeException("Failed to retrieve customer ID.");
         }
     }
+
+    public void bookRoomFromRent(int roomid, int customerid, Date startDate, Date endDate) {
+        if (startDate.after(endDate)) {
+            throw new IllegalArgumentException("Start date cannot be after end date.");
+        }
+
+        String jdbcURL = "jdbc:mysql://34.95.43.176:3306/HotelDB?useSSL=false";
+        String dbUser = "root";
+        String dbPassword = "AlecSam2025";
+
+      
+
+        if (!isAvailable(roomid, startDate, endDate)) {
+            throw new IllegalArgumentException("Room is not available for the selected dates.");
+        }
+
+        String bookingQuery = "INSERT INTO booking (room_id, customer_id, booking_date, checkin_date, checkout_date, status) " +
+                                "VALUES (?, ?, CURDATE(), ?, ?, 'DIRECT_RENT')";
+
+        try (Connection connection = DriverManager.getConnection(jdbcURL, dbUser, dbPassword);
+                PreparedStatement bookingStatement = connection.prepareStatement(bookingQuery, Statement.RETURN_GENERATED_KEYS)) {
+
+            bookingStatement.setInt(1, roomid);
+            bookingStatement.setInt(2, customerid);
+            bookingStatement.setDate(3, startDate);
+            bookingStatement.setDate(4, endDate);
+
+            bookingStatement.executeUpdate();
+
+            ResultSet generatedKeys = bookingStatement.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                int bookingId = generatedKeys.getInt(1);
+
+                String archiveQuery = "INSERT INTO archive (booking_id, renting_id, checkin_date, checkout_date, booking_date, start_date, end_date) " +
+                                        "VALUES (?, NULL, ?, ?, CURDATE(), NULL, NULL)";
+
+                try (PreparedStatement archiveStatement = connection.prepareStatement(archiveQuery)) {
+                    archiveStatement.setInt(1, bookingId);
+                    archiveStatement.setDate(2, startDate);
+                    archiveStatement.setDate(3, endDate);
+
+                    archiveStatement.executeUpdate();
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to book the room.");
+        }
+
+    }
 }

@@ -2,14 +2,20 @@ package hotelbackend.demo.Renting;
 
 import java.sql.*;
 import org.springframework.stereotype.Service;
+import hotelbackend.demo.Booking.BookingService;
 
 @Service
 public class RentingService {
 
-    public void rentRoom(int customerId, int roomId, Date startDate, Date endDate) throws SQLException {
+    public void rentRoom(int customerId, int roomId, Date startDate, Date endDate, boolean direct) throws SQLException {
         String jdbcURL = "jdbc:mysql://34.95.43.176:3306/HotelDB?useSSL=false";
         String dbUser = "root";
         String dbPassword = "AlecSam2025";
+
+        if (direct){
+            BookingService bookingService = new BookingService();
+            bookingService.bookRoomFromRent(roomId, customerId, startDate, endDate);
+        }
 
         String insertRentingQuery = "INSERT INTO renting (room_id, customer_id, start_date, end_date, payment_status) VALUES (?, ?, ?, ?, ?)";
         String insertArchiveQuery = "INSERT INTO archive (renting_id, start_date, end_date) VALUES (?, ?, ?)";
@@ -65,7 +71,7 @@ public class RentingService {
                         Date checkoutDate = resultSet.getDate("checkout_date");
 
                         // Convert booking to renting
-                        rentRoom(customerId, roomId, checkinDate, checkoutDate);
+                        rentRoom(customerId, roomId, checkinDate, checkoutDate, false);
 
                         // Update booking status
                         try (PreparedStatement updateBookingStatusStatement = connection.prepareStatement(updateBookingStatusQuery)) {

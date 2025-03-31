@@ -26,7 +26,8 @@ public class RentingController {
             renting.getCustomerId(),
             renting.getRoomId(),
             new java.sql.Date(renting.getStartDate().getTime()),
-            new java.sql.Date(renting.getEndDate().getTime())
+            new java.sql.Date(renting.getEndDate().getTime()),
+            true
         );
     }
 
