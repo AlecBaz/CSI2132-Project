@@ -87,6 +87,10 @@ public class BookingService {
     }
 
     public void bookRoom(int roomid, String customerIdNumber, Date startDate, Date endDate) {
+        if (startDate.after(endDate)) {
+            throw new IllegalArgumentException("Start date cannot be after end date.");
+        }
+
         String jdbcURL = "jdbc:mysql://34.95.43.176:3306/HotelDB?useSSL=false";
         String dbUser = "root";
         String dbPassword = "AlecSam2025";

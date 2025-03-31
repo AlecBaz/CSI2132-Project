@@ -52,7 +52,7 @@ function Search() {
           city: criteria.city,
           state: criteria.state,
           rating: criteria.rating || 1,
-          maxRooms: criteria.maxRoomsPerHotel || 0 // Add maxRoomsPerHotel to query
+          maxRooms: criteria.maxRoomsPerHotel || 1000 // Add maxRoomsPerHotel to query
         }).toString();
     
         fetch(`http://localhost:8080/api/rooms/search/filter?${query}`)
