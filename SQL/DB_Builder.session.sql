@@ -127,27 +127,6 @@ CREATE INDEX idx_room_filter ON room(hotel_id, price, capacity);
 CREATE INDEX idx_hotel_filter ON hotel(chain_id, city, state, rating, amount_of_rooms);
 CREATE INDEX idx_booking_date ON booking(checkin_date, checkout_date);
 
--- @block
-DROP TABLE IF EXISTS archive;
-DROP TABLE IF EXISTS renting;
-DROP TABLE IF EXISTS booking;
-
--- @block
-DROP TABLE IF EXISTS save_book;
-DROP TABLE IF EXISTS save_rent;
-DROP TABLE IF EXISTS renting;
-DROP TABLE IF EXISTS booking;
-DROP TABLE IF EXISTS rent_room;
-DROP TABLE IF EXISTS book_room;
-DROP TABLE IF EXISTS customer;
-DROP TABLE IF EXISTS room;
-DROP TABLE IF EXISTS employee;
-DROP TABLE IF EXISTS hotel;
-DROP TABLE IF EXISTS hotel_chain;
-
--- @block
-DROP VIEW IF EXISTS AvailableRoomsPerArea;
-DROP VIEW IF EXISTS HotelRoomCapacity;
 
 -- @block
 CREATE TRIGGER after_booking_insert
